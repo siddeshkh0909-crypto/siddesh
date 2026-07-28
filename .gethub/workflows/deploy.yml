@@ -1,1 +1,52 @@
-hi
+name: Deploy KIT Smart Attendance to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── Replace the __PLACEHOLDER__ tokens in the HTML with your
+      #    real Firebase config, pulled from GitHub repository secrets.
+      #    ⚠️ Change "kit_smart_attendance.html" below to match the
+      #    actual filename of your HTML file in this repo.
+      - name: Inject Firebase config from secrets
+        env:
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+          FIREBASE_APPID: ${{ secrets.FIREBASE_APPID }}
+          FIREBASE_AUTHDOMIN: ${{ secrets.FIREBASE_AUTHDOMIN }}
+          FIREBASE_MESSAGINGSENDERID: ${{ secrets.FIREBASE_MESSAGINGSENDERID }}
+          FIREBASE_PROJECTID: ${{ secrets.FIREBASE_PROJECTID }}
+          FIREBASE_STORAGEBUCKET: ${{ secrets.FIREBASE_STORAGEBUCKET }}
+        run: |
+          FILE="kit_smart_attendance.html"
+          sed -i "s#__FIREBASE_API_KEY__#${FIREBASE_API_KEY}#g" "$FILE"
+          sed -i "s#__FIREBASE_APPID__#${FIREBASE_APPID}#g" "$FILE"
+          sed -i "s#__FIREBASE_AUTHDOMAIN__#${FIREBASE_AUTHDOMIN}#g" "$FILE"
+          sed -i "s#__FIREBASE_MESSAGINGSENDERID__#${FIREBASE_MESSAGINGSENDERID}#g" "$FILE"
+          sed -i "s#__FIREBASE_PROJECTID__#${FIREBASE_PROJECTID}#g" "$FILE"
+          sed -i "s#__FIREBASE_STORAGEBUCKET__#${FIREBASE_STORAGEBUCKET}#g" "$FILE"
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
