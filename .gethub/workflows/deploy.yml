@@ -27,13 +27,15 @@ jobs:
       #    actual filename of your HTML file in this repo.
       - name: Inject Firebase config from secrets
         env:
-          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
-          FIREBASE_APPID: ${{ secrets.FIREBASE_APPID }}
-          FIREBASE_AUTHDOMIN: ${{ secrets.FIREBASE_AUTHDOMIN }}
-          FIREBASE_MESSAGINGSENDERID: ${{ secrets.FIREBASE_MESSAGINGSENDERID }}
-          FIREBASE_PROJECTID: ${{ secrets.FIREBASE_PROJECTID }}
-          FIREBASE_STORAGEBUCKET: ${{ secrets.FIREBASE_STORAGEBUCKET }}
-        run: |
+const firebaseConfig = {
+  apiKey: "AIzaSyCDcaXYIO-lDB_WJcyJrMCBG6ww9nRrY8w",
+  authDomain: "smart-attendance-26e62.firebaseapp.com",
+  projectId: "smart-attendance-26e62",
+  storageBucket: "smart-attendance-26e62.firebasestorage.app",
+  messagingSenderId: "421373704972",
+  appId: "1:421373704972:web:98139ca74bcb3e62212729",
+  measurementId: "G-WFJM11RJTV"
+};
           FILE="kit_smart_attendance.html"
           sed -i "s#__FIREBASE_API_KEY__#${FIREBASE_API_KEY}#g" "$FILE"
           sed -i "s#__FIREBASE_APPID__#${FIREBASE_APPID}#g" "$FILE"
