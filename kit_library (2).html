@@ -2,12 +2,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#1a1a2e">
-<meta name="description" content="KIT Library — Karavali Institution of Technology Digital Library System">
+<meta name="description" content="KIT Smart Attendance — Karavali Institution of Technology Attendance System">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="KIT Library">
+<meta name="apple-mobile-web-app-title" content="KIT Smart Attendance">
 <link rel="manifest" id="manifestLink" href="blob:https://siddeshkh260-cloud.github.io/e49a2236-8b3f-403e-8fec-41c36a7906a1">
-<title>KIT Library — Karavali Institution of Technology</title>
+<title>KIT Smart Attendance — Karavali Institution of Technology</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=DM+Sans:wght@300;400;500;600&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 
 <!-- QR code generation (student ID card) + scanning (teacher attendance) -->
@@ -28,16 +28,19 @@
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
   // ════════════════════════════════════════════════════════════
-  //  🔧 PASTE YOUR FIREBASE CONFIG HERE
-  //  Firebase Console → Project Settings → Your Apps → Web App
+  //  🔧 FIREBASE CONFIG — injected automatically at deploy time
+  //  by .github/workflows/deploy.yml from your GitHub repository
+  //  secrets. Do NOT hardcode real values here — the placeholders
+  //  below are replaced by the workflow before the site is published.
+  //  For local testing, temporarily paste real values in their place.
   // ════════════════════════════════════════════════════════════
   const firebaseConfig = {
-    apiKey: "AIzaSyBDlN87xrd8NP_PQ4CIsV5q-P78w8k80Ms",
-  authDomain: "library-5015d.firebaseapp.com",
-  projectId: "library-5015d",
-  storageBucket: "library-5015d.firebasestorage.app",
-  messagingSenderId: "25135880670",
-  appId: "1:25135880670:web:0885d13d72ee38061ae54f"
+    apiKey: "__FIREBASE_API_KEY__",
+    authDomain: "__FIREBASE_AUTHDOMAIN__",
+    projectId: "__FIREBASE_PROJECTID__",
+    storageBucket: "__FIREBASE_STORAGEBUCKET__",
+    messagingSenderId: "__FIREBASE_MESSAGINGSENDERID__",
+    appId: "__FIREBASE_APPID__"
   };
 
   const app  = initializeApp(firebaseConfig);
@@ -67,14 +70,10 @@
       document.getElementById('appShell').style.display = 'block';
       updateHeaderUser(user);
 
-      document.getElementById('librarianNav').style.display = 'none';
       document.getElementById('teacherNav').style.display = 'none';
       document.getElementById('studentOnlyBtns').style.display = 'none';
 
-      if (window.currentUserRole === 'librarian') {
-        document.getElementById('librarianNav').style.display = 'flex';
-        switchView('admin');
-      } else if (window.currentUserRole === 'teacher') {
+      if (window.currentUserRole === 'teacher') {
         document.getElementById('teacherNav').style.display = 'flex';
         switchView('teacher');
       } else {
@@ -237,7 +236,6 @@ header {
   text-transform: uppercase; letter-spacing: 0.06em;
 }
 .role-badge.student { background: rgba(39,174,96,0.2); color: #2ecc71; }
-.role-badge.librarian { background: rgba(192,57,43,0.2); color: #e74c3c; }
 .role-badge.teacher { background: rgba(41,128,185,0.2); color: #5dade2; }
 
 /* User badge */
@@ -534,14 +532,13 @@ td.actions-cell { white-space:nowrap; }
   <div class="auth-card">
     <div class="auth-card-header">
       <img class="auth-logo" src="https://collegesdirectory.in/World/MasterAdmin/College-Master/College_Logo/Logo-303131703.png" alt="KIT" onerror="this.style.display='none'">
-      <h1>KIT Library</h1>
+      <h1>KIT Smart Attendance</h1>
       <p>Karavali Institution of Technology</p>
 
       <!-- Role selector -->
       <div class="auth-role-picker">
         <button class="role-btn active" onclick="selectRole('student')" id="roleStudent">🎓 Student</button>
         <button class="role-btn" onclick="selectRole('teacher')" id="roleTeacher">🧑‍🏫 Teacher</button>
-        <button class="role-btn" onclick="selectRole('librarian')" id="roleLibrarian">🔑 Librarian</button>
       </div>
     </div>
 
@@ -599,7 +596,7 @@ td.actions-cell { white-space:nowrap; }
       <!-- REGISTER FORM -->
       <div id="signupForm" style="display:none">
         <div id="librarianNote" class="librarian-note" style="display:none">
-          🔐 <strong id="roleNoteLabel">Librarian registration</strong> requires an authorization code provided by the institution.
+          🔐 <strong id="roleNoteLabel">Teacher registration</strong> requires an authorization code provided by the institution.
         </div>
         <div class="auth-field">
           <label>Full Name</label>
@@ -617,9 +614,9 @@ td.actions-cell { white-space:nowrap; }
           </div>
         </div>
         <div class="auth-field" id="libCodeWrap" style="display:none">
-          <label id="libCodeLabel">Librarian Code</label>
+          <label id="libCodeLabel">Teacher Code</label>
           <div class="pw-wrap">
-            <input class="auth-input" type="password" id="libCode" placeholder="Institution authorization code">
+            <input class="auth-input" type="password" id="libCode" placeholder="Institution teacher code">
             <button class="pw-eye" type="button" onclick="togglePw('libCode',this)" title="Show/hide">👁</button>
           </div>
         </div>
@@ -650,7 +647,7 @@ td.actions-cell { white-space:nowrap; }
   <div class="header-left">
     <img class="header-logo" src="https://collegesdirectory.in/World/MasterAdmin/College-Master/College_Logo/Logo-303131703.png" alt="KIT Logo" onerror="this.style.display='none'">
     <div>
-      <div class="header-title">KIT Library</div>
+      <div class="header-title">KIT Smart Attendance</div>
       <div class="header-sub">Karavali Institution of Technology</div>
     </div>
   </div>
@@ -667,11 +664,6 @@ td.actions-cell { white-space:nowrap; }
     <!-- Nav (students only) -->
     <div class="mode-toggle" id="studentOnlyBtns" style="display: flex;">
       <button class="mode-btn active" onclick="switchView('student')">🎓 Browse</button>
-    </div>
-
-    <!-- Nav (librarians only) -->
-    <div class="mode-toggle" id="librarianNav" style="display:none">
-      <button class="mode-btn" onclick="switchView('admin')">🔑 Dashboard</button>
     </div>
 
     <!-- Nav (teachers only) -->
@@ -705,7 +697,7 @@ td.actions-cell { white-space:nowrap; }
   <div class="view active" id="view-student">
     <div class="student-hero">
       <h2 id="heroGreeting">Hello, Siddy! 👋</h2>
-      <p>Welcome to KIT Library</p>
+      <p>Welcome to KIT Smart Attendance</p>
     </div>
 
     <div class="sub-tabs">
@@ -737,13 +729,6 @@ td.actions-cell { white-space:nowrap; }
     </div>
   </div>
 
-  <!-- ═══ ADMIN VIEW (Librarian) ═══ -->
-  <div class="view" id="view-admin">
-    <div class="admin-header">
-      <h2>Librarian Dashboard</h2>
-    </div>
-  </div>
-
   <!-- ═══ TEACHER VIEW ═══ -->
   <div class="view" id="view-teacher">
     <div class="att-hero">
@@ -761,7 +746,10 @@ td.actions-cell { white-space:nowrap; }
     <div class="att-panel active" id="tPanelSubjects">
       <div class="section-head">
         <h3>Your Subjects</h3>
-        <button class="btn btn-primary" onclick="openSubjectModal()">➕ Add Subject</button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="openSubjectModal()">➕ Add Subject</button>
+          <button class="btn btn-ghost" onclick="seedDefaultSubjects()">📚 Add Default Subjects</button>
+        </div>
       </div>
       <div class="subject-grid" id="subjectGrid">
         <div class="empty-note">Loading subjects…</div>
@@ -833,7 +821,6 @@ td.actions-cell { white-space:nowrap; }
 <div class="mobile-tabs" id="mobileTabs">
   <button class="active" onclick="switchView('student')" id="mobileStudentBtn" style="display: flex;">🎓<br>Browse</button>
   <button onclick="switchView('teacher')" id="mobileTeacherBtn" style="display:none">🧑‍🏫<br>Teach</button>
-  <button onclick="switchView('admin')" id="mobileAdminBtn" style="display:none">🔑<br>Admin</button>
 </div>
 
 </div><!-- end appShell -->
@@ -842,7 +829,7 @@ td.actions-cell { white-space:nowrap; }
 <!-- PWA install prompt -->
 <div id="pwaPrompt">
   <div class="pwa-prompt-text">
-    <div class="pwa-prompt-title">📱 Install KIT Library</div>
+    <div class="pwa-prompt-title">📱 Install KIT Smart Attendance</div>
     <div class="pwa-prompt-sub">Add to home screen for quick access</div>
   </div>
   <button class="btn btn-primary btn-sm" onclick="installPWA()">Install</button>
@@ -856,7 +843,6 @@ td.actions-cell { white-space:nowrap; }
 //  SECRET LIBRARIAN CODE — change this!
 //  Store this securely in production
 // ══════════════════════════════════════════
-const LIBRARIAN_SECRET = "KIT@LIB2024";
 const TEACHER_SECRET = "KIT@TEACH2024";
 
 let selectedRole = 'student'; // current selection on auth screen
@@ -882,9 +868,9 @@ function getBrowserInfo() {
 // ── Inject Web App Manifest via blob ──
 (function injectManifest() {
   const manifest = {
-    name: "KIT Library",
-    short_name: "KIT Lib",
-    description: "Karavali Institution of Technology Digital Library",
+    name: "KIT Smart Attendance",
+    short_name: "KIT Attendance",
+    description: "Karavali Institution of Technology Smart Attendance System",
     start_url: "./",
     display: "standalone",
     background_color: "#f7f4ef",
@@ -918,7 +904,7 @@ window.addEventListener('appinstalled', () => {
   deferredInstallPrompt = null;
   document.getElementById('installBtn').classList.remove('visible');
   document.getElementById('pwaPrompt').classList.remove('show');
-  showToast('✅ KIT Library installed as an app!');
+  showToast('✅ KIT Smart Attendance installed as an app!');
 });
 
 // ── Always show install button after load (fallback for all browsers) ──
@@ -937,7 +923,7 @@ function installPWA() {
   if (deferredInstallPrompt) {
     deferredInstallPrompt.prompt();
     deferredInstallPrompt.userChoice.then(r => {
-      if (r.outcome === 'accepted') showToast('📱 Installing KIT Library…');
+      if (r.outcome === 'accepted') showToast('📱 Installing KIT Smart Attendance…');
       deferredInstallPrompt = null;
       document.getElementById('pwaPrompt').classList.remove('show');
     });
@@ -970,7 +956,7 @@ function showInstallGuide(type, info) {
       <div class="ig-step"><span class="ig-icon">1</span><div>Tap the <strong>Share</strong> button <span style="font-size:1.2rem">⬆️</span> at the bottom of Safari</div></div>
       <div class="ig-step"><span class="ig-icon">2</span><div>Scroll down and tap <strong>"Add to Home Screen"</strong></div></div>
       <div class="ig-step"><span class="ig-icon">3</span><div>Tap <strong>"Add"</strong> in the top right corner</div></div>
-      <div class="ig-note">📌 KIT Library will appear as an app icon on your home screen.</div>
+      <div class="ig-note">📌 KIT Smart Attendance will appear as an app icon on your home screen.</div>
     `;
   } else {
     // Detect which desktop browser
@@ -998,7 +984,7 @@ function showInstallGuide(type, info) {
       // Chrome desktop
       browserSteps = `
         <div class="ig-step"><span class="ig-icon">1</span><div>Look for the <strong>install icon</strong> <span style="font-size:1.1rem">⊕</span> in the address bar (right side)</div></div>
-        <div class="ig-step"><span class="ig-icon">2</span><div>Click it and select <strong>"Install KIT Library"</strong></div></div>
+        <div class="ig-step"><span class="ig-icon">2</span><div>Click it and select <strong>"Install KIT Smart Attendance"</strong></div></div>
         <div class="ig-step"><span class="ig-icon">3</span><div>Or go to <strong>⋮ Menu → Cast, Save, and Share → Install page as app</strong></div></div>
       `;
     }
@@ -1023,7 +1009,7 @@ function showInstallGuide(type, info) {
           Save the full app as a single HTML file on your computer. Open it anytime in any browser — no internet needed for the UI.
         </p>
         <button class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;margin-bottom:10px" onclick="downloadHTMLFile()">
-          ⬇️ Download kit_library.html
+          ⬇️ Download kit_smart_attendance.html
         </button>
         <div class="ig-step" style="margin-top:8px"><span class="ig-icon">→</span><div>After downloading, open the file in <strong>Chrome</strong> or <strong>Edge</strong> and it will offer to install it as an app</div></div>
         <div class="ig-note" style="margin-top:10px">📁 The file includes the full UI and Firebase integration.</div>
@@ -1038,7 +1024,7 @@ function showInstallGuide(type, info) {
     <div class="ig-modal">
       <div class="ig-header">
         <div>
-          <div class="ig-title">📱 Install KIT Library</div>
+          <div class="ig-title">📱 Install KIT Smart Attendance</div>
           <div class="ig-sub">Get the app on your device</div>
         </div>
         <button class="ig-close" onclick="closeInstallGuide()">×</button>
@@ -1067,7 +1053,7 @@ function downloadHTMLFile() {
     const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'kit_library.html';
+    a.download = 'kit_smart_attendance.html';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -1083,15 +1069,11 @@ function selectRole(role) {
   selectedRole = role;
   document.getElementById('roleStudent').classList.toggle('active', role === 'student');
   document.getElementById('roleTeacher').classList.toggle('active', role === 'teacher');
-  document.getElementById('roleLibrarian').classList.toggle('active', role === 'librarian');
-  const needsCode = (role === 'librarian' || role === 'teacher');
+  const needsCode = (role === 'teacher');
   document.getElementById('librarianNote').style.display = needsCode ? 'block' : 'none';
-  document.getElementById('roleNoteLabel').textContent = role === 'teacher' ? 'Teacher registration' : 'Librarian registration';
-  document.getElementById('libCodeLabel').textContent = role === 'teacher' ? 'Teacher Code' : 'Librarian Code';
-  document.getElementById('libCode').placeholder = role === 'teacher' ? 'Institution teacher code' : 'Institution authorization code';
   const isSignup = document.getElementById('signupForm').style.display !== 'none';
   document.getElementById('libCodeWrap').style.display = (needsCode && isSignup) ? 'block' : 'none';
-  // Hide google for librarian/teacher signup for security
+  // Hide google for teacher signup for security
   const googleSignupBtn = document.getElementById('googleSignupBtn');
   const googleDivider = document.getElementById('googleDividerSignup');
   if (isSignup && needsCode) {
@@ -1200,11 +1182,8 @@ async function handleSignUp() {
   if (!name || !email || !pw) { showAuthError('Please fill all fields.'); return; }
   if (pw.length < 6) { showAuthError('Password must be at least 6 characters.'); return; }
 
-  // Librarian / Teacher code check
-  if (selectedRole === 'librarian') {
-    const code = document.getElementById('libCode').value;
-    if (code !== LIBRARIAN_SECRET) { showAuthError('Invalid librarian authorization code.'); return; }
-  } else if (selectedRole === 'teacher') {
+  // Teacher code check
+  if (selectedRole === 'teacher') {
     const code = document.getElementById('libCode').value;
     if (code !== TEACHER_SECRET) { showAuthError('Invalid teacher authorization code.'); return; }
   }
@@ -1217,7 +1196,7 @@ async function handleSignUp() {
     await fb.setDoc(fb.doc(fb.db, 'users', cred.user.uid), {
       name, email, role: selectedRole, createdAt: new Date().toISOString()
     });
-    showToast(`Welcome to KIT Library, ${name}! 🎉`);
+    showToast(`Welcome to KIT Smart Attendance, ${name}! 🎉`);
   } catch(err) {
     const msgs = {
       'auth/email-already-in-use':'An account with this email already exists.',
@@ -1233,9 +1212,9 @@ async function handleGoogleAuth() {
   const fb = window._firebase;
   if (!fb) { showAuthError('Firebase not configured.'); return; }
 
-  // Librarian/Teacher cannot use Google for new signup (no way to verify role securely)
-  if ((selectedRole === 'librarian' || selectedRole === 'teacher') && document.getElementById('signupForm').style.display !== 'none') {
-    showAuthError(`${selectedRole === 'teacher' ? 'Teachers' : 'Librarians'} must register with email and authorization code.`);
+  // Teacher cannot use Google for new signup (no way to verify role securely)
+  if (selectedRole === 'teacher' && document.getElementById('signupForm').style.display !== 'none') {
+    showAuthError('Teachers must register with email and authorization code.');
     return;
   }
 
@@ -1295,16 +1274,15 @@ function updateHeaderUser(user) {
   }
 
   const roleBadge = document.getElementById('roleBadge');
-  const roleLabels = { librarian: '🔑 Librarian', teacher: '🧑‍🏫 Teacher', student: '🎓 Student' };
+  const roleLabels = { teacher: '🧑‍🏫 Teacher', student: '🎓 Student' };
   roleBadge.textContent = roleLabels[role] || roleLabels.student;
   roleBadge.className = 'role-badge ' + role;
 
   // Show/hide mobile tabs
   document.getElementById('mobileStudentBtn').style.display = role === 'student' ? 'flex' : 'none';
   document.getElementById('mobileTeacherBtn').style.display = role === 'teacher' ? 'flex' : 'none';
-  document.getElementById('mobileAdminBtn').style.display = role === 'librarian' ? 'flex' : 'none';
 
-  const subtexts = { librarian: 'Librarian Access', teacher: 'Teacher Access', student: 'Student Access' };
+  const subtexts = { teacher: 'Teacher Access', student: 'Student Access' };
   document.getElementById('userSubtext').textContent = subtexts[role] || subtexts.student;
 }
 
@@ -1337,9 +1315,6 @@ function switchView(view) {
     const g = document.getElementById('teacherGreeting'); if (g) g.textContent = `Hello, ${name}! 👋`;
     loadSubjectsForTeacher();
     populateSubjectSelects();
-  } else {
-    document.querySelectorAll('.mode-btn')[0]?.classList.add('active');
-    document.getElementById('mobileAdminBtn')?.classList.add('active');
   }
 }
 
@@ -1420,6 +1395,38 @@ async function deleteSubject(id) {
   } catch(e) { showToast('Error deleting subject: ' + e.message); }
 }
 
+const DEFAULT_SUBJECTS = [
+  { name: 'Mathematics', code: 'MATH' },
+  { name: 'Artificial Intelligence', code: 'AI' },
+  { name: 'Python', code: 'PY' },
+  { name: 'C Programming', code: 'CPROG' },
+  { name: 'IEC', code: 'IEC' },
+  { name: 'EAE', code: 'EAE' }
+];
+
+async function seedDefaultSubjects(silent) {
+  const fb = window._firebase;
+  try {
+    const existing = await fetchAllSubjects();
+    const existingNames = new Set(existing.map(s => (s.name||'').toLowerCase()));
+    const toAdd = DEFAULT_SUBJECTS.filter(s => !existingNames.has(s.name.toLowerCase()));
+    if (!toAdd.length) { if (!silent) showToast('Those default subjects are already added.'); return; }
+    for (const s of toAdd) {
+      const id = crypto.randomUUID ? crypto.randomUUID() : 'sub_' + Date.now() + Math.random().toString(36).slice(2);
+      await fb.setDoc(fb.doc(fb.db, 'subjects', id), {
+        name: s.name, code: s.code,
+        teacherId: window.currentUser.uid,
+        teacherName: window.currentUser.displayName || window.currentUser.email,
+        createdAt: new Date().toISOString()
+      });
+    }
+    if (!silent) {
+      showToast(`✅ Added ${toAdd.length} subject${toAdd.length>1?'s':''}`);
+      loadSubjectsForTeacher();
+    }
+  } catch(e) { if (!silent) showToast('Error adding default subjects: ' + e.message); }
+}
+
 async function fetchAllSubjects() {
   const fb = window._firebase;
   const snap = await fb.getDocs(fb.collection(fb.db, 'subjects'));
@@ -1433,10 +1440,23 @@ async function loadSubjectsForTeacher() {
   try {
     const subjects = await fetchAllSubjects();
     if (!subjects.length) {
-      grid.innerHTML = '<div class="empty-note">No subjects yet. Click "Add Subject" to create one.</div>';
+      await seedDefaultSubjects(true);
+      const seeded = await fetchAllSubjects();
+      renderSubjectGrid(seeded);
       return;
     }
-    grid.innerHTML = subjects.map(s => `
+    renderSubjectGrid(subjects);
+  } catch(e) { grid.innerHTML = `<div class="empty-note">Error loading subjects: ${escapeHtml(e.message)}</div>`; }
+}
+
+function renderSubjectGrid(subjects) {
+  const grid = document.getElementById('subjectGrid');
+  if (!grid) return;
+  if (!subjects.length) {
+    grid.innerHTML = '<div class="empty-note">No subjects yet. Click "Add Subject" to create one.</div>';
+    return;
+  }
+  grid.innerHTML = subjects.map(s => `
       <div class="subject-card">
         <div class="subject-card-name">${escapeHtml(s.name)}</div>
         <div class="subject-card-code">${escapeHtml(s.code)}</div>
@@ -1447,7 +1467,6 @@ async function loadSubjectsForTeacher() {
         </div>
       </div>
     `).join('');
-  } catch(e) { grid.innerHTML = `<div class="empty-note">Error loading subjects: ${escapeHtml(e.message)}</div>`; }
 }
 
 async function populateSubjectSelects() {
@@ -1677,7 +1696,7 @@ document.addEventListener('click', e => { if(!e.target.closest('.user-badge-wrap
     <div class="ig-modal">
       <div class="ig-header">
         <div>
-          <div class="ig-title">📱 Install KIT Library</div>
+          <div class="ig-title">📱 Install KIT Smart Attendance</div>
           <div class="ig-sub">Get the app on your device</div>
         </div>
         <button class="ig-close" onclick="closeInstallGuide()">×</button>
@@ -1695,7 +1714,7 @@ document.addEventListener('click', e => { if(!e.target.closest('.user-badge-wrap
         </p>
         
         <div class="ig-step"><span class="ig-icon">1</span><div>Look for the <strong>install icon</strong> <span style="font-size:1.1rem">⊕</span> in the address bar (right side)</div></div>
-        <div class="ig-step"><span class="ig-icon">2</span><div>Click it and select <strong>"Install KIT Library"</strong></div></div>
+        <div class="ig-step"><span class="ig-icon">2</span><div>Click it and select <strong>"Install KIT Smart Attendance"</strong></div></div>
         <div class="ig-step"><span class="ig-icon">3</span><div>Or go to <strong>⋮ Menu → Cast, Save, and Share → Install page as app</strong></div></div>
       
         <div class="ig-note">💡 If you opened this as a local file, host it on Firebase Hosting, Netlify, or GitHub Pages first to enable browser install.</div>
@@ -1706,7 +1725,7 @@ document.addEventListener('click', e => { if(!e.target.closest('.user-badge-wrap
           Save the full app as a single HTML file on your computer. Open it anytime in any browser — no internet needed for the UI.
         </p>
         <button class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;margin-bottom:10px" onclick="downloadHTMLFile()">
-          ⬇️ Download kit_library.html
+          ⬇️ Download kit_smart_attendance.html
         </button>
         <div class="ig-step" style="margin-top:8px"><span class="ig-icon">→</span><div>After downloading, open the file in <strong>Chrome</strong> or <strong>Edge</strong> and it will offer to install it as an app</div></div>
         <div class="ig-note" style="margin-top:10px">📁 The file includes the full UI and Firebase integration.</div>
