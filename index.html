@@ -79,6 +79,8 @@
         document.getElementById('teacherNav').style.display = 'none';
         document.getElementById('studentOnlyBtns').style.display = 'none';
         document.getElementById('hodNav').style.display = 'none';
+        const principalNavEl = document.getElementById('principalNav');
+        if (principalNavEl) principalNavEl.style.display = 'none';
 
         if (window.currentUserRole === 'teacher') {
           document.getElementById('teacherNav').style.display = 'flex';
@@ -86,6 +88,9 @@
         } else if (window.currentUserRole === 'hod') {
           document.getElementById('hodNav').style.display = 'flex';
           switchView('hod');
+        } else if (window.currentUserRole === 'principal') {
+          if (principalNavEl) principalNavEl.style.display = 'flex';
+          switchView('principal');
         } else {
           document.getElementById('studentOnlyBtns').style.display = 'flex';
           switchView('student');
@@ -3358,7 +3363,7 @@
         loadMyAttendance();
       } else if (view === 'teacher') {
         document.querySelectorAll('.mode-btn')[0]?.classList.add('active');
-        document.getElementById('mobileTeacherBtn')?.classList.active;
+        document.getElementById('mobileTeacherBtn')?.classList.add('active');
         const name = window.currentUser?.displayName || window.currentUser?.email?.split('@')[0] || '';
         const g = document.getElementById('teacherGreeting'); if (g) g.textContent = `Hello, ${name}!`;
         loadSubjectsForTeacher();
@@ -3372,6 +3377,7 @@
         const g = document.getElementById('principalGreeting'); if (g) g.textContent = `Principal Portal - ${name}`;
         renderPrincipalTeacherActivity();
       }
+      if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
     // ══════════ STUDENT / TEACHER / HOD SUB-TABS ══════════
