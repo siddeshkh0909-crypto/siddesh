@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0f172a">
-  <meta name="description" content="KIT Smart Attendance — Karavali Institution of Technology Attendance System">
+  <meta name="description" content="KIT SMART — Karavali Institution of Technology Portal">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="KIT Smart Attendance">
+  <meta name="apple-mobile-web-app-title" content="KIT SMART">
   <link rel="manifest" id="manifestLink" href="">
-  <title>KIT Smart Attendance — Karavali Institution of Technology</title>
+  <title>KIT SMART — Karavali Institution of Technology</title>
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap"
     rel="stylesheet">
@@ -1935,137 +1935,682 @@
     }
 
     /* ════════ HOD ROLE & BADGES ════════ */
-    .role-badge.hod { background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(217,119,6,0.2)); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+    .role-badge.hod {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.2));
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
 
     /* ════════ VTU RESULTS SYSTEM ════════ */
     .vtu-semester-card {
-      background: white; border: 1px solid var(--border); border-radius: var(--radius);
-      margin-bottom: 14px; overflow: hidden; transition: all 0.2s;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 14px;
+      overflow: hidden;
+      transition: all 0.2s;
     }
-    .vtu-semester-card:hover { border-color: var(--accent); box-shadow: var(--shadow-md); }
+
+    .vtu-semester-card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow-md);
+    }
+
     .vtu-semester-header {
-      padding: 16px 20px; cursor: pointer; display: flex; align-items: center;
-      justify-content: space-between; background: var(--paper); transition: background 0.2s;
+      padding: 16px 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--paper);
+      transition: background 0.2s;
     }
-    .vtu-semester-header:hover { background: var(--cream); }
-    .vtu-semester-title { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; }
-    .vtu-semester-meta { display: flex; align-items: center; gap: 12px; }
-    .vtu-semester-body { padding: 16px 20px 20px; display: none; border-top: 1px solid var(--border); }
-    .vtu-semester-card.open .vtu-semester-body { display: block; }
-    .vtu-semester-card.open .vtu-chevron { transform: rotate(180deg); }
-    .vtu-chevron { transition: transform 0.2s; }
+
+    .vtu-semester-header:hover {
+      background: var(--cream);
+    }
+
+    .vtu-semester-title {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .vtu-semester-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .vtu-semester-body {
+      padding: 16px 20px 20px;
+      display: none;
+      border-top: 1px solid var(--border);
+    }
+
+    .vtu-semester-card.open .vtu-semester-body {
+      display: block;
+    }
+
+    .vtu-semester-card.open .vtu-chevron {
+      transform: rotate(180deg);
+    }
+
+    .vtu-chevron {
+      transition: transform 0.2s;
+    }
 
     .sgpa-badge {
-      font-family: 'DM Mono', monospace; font-weight: 700; font-size: 0.82rem;
-      padding: 4px 12px; border-radius: 20px;
+      font-family: 'DM Mono', monospace;
+      font-weight: 700;
+      font-size: 0.82rem;
+      padding: 4px 12px;
+      border-radius: 20px;
     }
-    .sgpa-good { background: var(--green-light); color: #065f46; }
-    .sgpa-mid { background: #fef3c7; color: #92400e; }
-    .sgpa-low { background: #fef2f2; color: var(--red); }
 
-    .grade-P { color: #065f46; font-weight: 700; background: var(--green-light); padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; }
-    .grade-F { color: var(--red); font-weight: 700; background: #fef2f2; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; }
-    .grade-A { color: var(--amber); font-weight: 700; background: #fef3c7; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; }
+    .sgpa-good {
+      background: var(--green-light);
+      color: #065f46;
+    }
+
+    .sgpa-mid {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .sgpa-low {
+      background: #fef2f2;
+      color: var(--red);
+    }
+
+    .grade-P {
+      color: #065f46;
+      font-weight: 700;
+      background: var(--green-light);
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+    }
+
+    .grade-F {
+      color: var(--red);
+      font-weight: 700;
+      background: #fef2f2;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+    }
+
+    .grade-A {
+      color: var(--amber);
+      font-weight: 700;
+      background: #fef3c7;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+    }
 
     .cgpa-hero {
       background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
-      color: white; border-radius: var(--radius-lg); padding: 24px 28px;
-      margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;
-      border: 1px solid rgba(255,255,255,0.06); flex-wrap: wrap; gap: 16px;
+      color: white;
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      flex-wrap: wrap;
+      gap: 16px;
     }
-    .cgpa-value { font-family: 'DM Mono', monospace; font-size: 2.2rem; font-weight: 700; color: #38bdf8; }
-    .cgpa-label { font-size: 0.78rem; color: rgba(255,255,255,0.55); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .cgpa-value {
+      font-family: 'DM Mono', monospace;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+
+    .cgpa-label {
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.55);
+      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
 
     /* HOD Dashboard */
     .hod-hero {
       background: linear-gradient(135deg, #0f172a 0%, #312e81 40%, #4c1d95 100%);
-      color: white; border-radius: var(--radius-lg); padding: 28px 32px;
-      margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.06);
-      position: relative; overflow: hidden;
+      color: white;
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      position: relative;
+      overflow: hidden;
     }
+
     .hod-hero::before {
-      content: ''; position: absolute; right: 30px; top: 50%; transform: translateY(-50%);
-      width: 120px; height: 120px; background: rgba(245,158,11,0.1); border-radius: 50%;
+      content: '';
+      position: absolute;
+      right: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 120px;
+      height: 120px;
+      background: rgba(245, 158, 11, 0.1);
+      border-radius: 50%;
       filter: blur(40px);
     }
-    .hod-hero h3 { font-family: 'Inter', sans-serif; font-size: 1.35rem; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.02em; }
-    .hod-hero p { color: rgba(255,255,255,0.55); font-size: 0.85rem; }
 
-    .hod-stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
-    @media(max-width:768px){ .hod-stats-row { grid-template-columns: repeat(2, 1fr); } }
-    .hod-stat-card {
-      background: white; border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 18px 20px; transition: all 0.2s;
+    .hod-hero h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      letter-spacing: -0.02em;
     }
-    .hod-stat-card:hover { box-shadow: var(--shadow-md); }
-    .hod-stat-num { font-family: 'Inter', sans-serif; font-size: 1.85rem; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
-    .hod-stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 2px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+
+    .hod-hero p {
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 0.85rem;
+    }
+
+    .hod-stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    @media(max-width:768px) {
+      .hod-stats-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .hod-stat-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      transition: all 0.2s;
+    }
+
+    .hod-stat-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .hod-stat-num {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.85rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    .hod-stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 2px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
 
     .student-search-wrap {
-      display: flex; gap: 10px; margin-bottom: 16px; align-items: center; flex-wrap: wrap;
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+      align-items: center;
+      flex-wrap: wrap;
     }
+
     .student-search-wrap input {
-      flex: 1; min-width: 200px; padding: 10px 14px; border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.88rem; outline: none;
+      flex: 1;
+      min-width: 200px;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      outline: none;
     }
-    .student-search-wrap input:focus { border-color: var(--accent); }
+
+    .student-search-wrap input:focus {
+      border-color: var(--accent);
+    }
+
     .student-search-wrap select {
-      padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm);
-      font-family: 'Inter', sans-serif; font-size: 0.85rem; background: white; color: var(--ink); cursor: pointer; outline: none;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      background: white;
+      color: var(--ink);
+      cursor: pointer;
+      outline: none;
     }
 
     /* VTU Marks Entry Modal Table */
-    .marks-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
-    .marks-table th { background: var(--paper); padding: 8px 10px; text-align: left; font-size: 0.72rem; color: var(--muted); text-transform: uppercase; }
-    .marks-table td { padding: 6px 8px; }
-    .marks-table input, .marks-table select {
-      width: 100%; padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px;
-      font-family: 'Inter', sans-serif; font-size: 0.82rem; outline: none;
+    .marks-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 0.85rem;
     }
-    .marks-table input:focus, .marks-table select:focus { border-color: var(--accent); }
+
+    .marks-table th {
+      background: var(--paper);
+      padding: 8px 10px;
+      text-align: left;
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .marks-table td {
+      padding: 6px 8px;
+    }
+
+    .marks-table input,
+    .marks-table select {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      outline: none;
+    }
+
+    .marks-table input:focus,
+    .marks-table select:focus {
+      border-color: var(--accent);
+    }
 
     /* ════════ SCHEMES & IMMUTABLE LOCK & PRINCIPAL CSS ════════ */
     .scheme-badge {
-      font-family: 'DM Mono', monospace; font-size: 0.72rem; font-weight: 700;
-      padding: 3px 9px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
-    .scheme-2025 { background: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe; }
-    .scheme-2022 { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
-    .scheme-2018 { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+
+    .scheme-2025 {
+      background: #e0e7ff;
+      color: #3730a3;
+      border: 1px solid #c7d2fe;
+    }
+
+    .scheme-2022 {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .scheme-2018 {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+    }
 
     .locked-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1;
-      padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #cbd5e1;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
     }
 
     .role-badge.principal {
-      background: linear-gradient(135deg, rgba(225,29,72,0.2), rgba(190,18,60,0.2));
-      color: #f43f5e; border: 1px solid rgba(244,63,94,0.3);
+      background: linear-gradient(135deg, rgba(225, 29, 72, 0.2), rgba(190, 18, 60, 0.2));
+      color: #f43f5e;
+      border: 1px solid rgba(244, 63, 94, 0.3);
     }
 
     .principal-hero {
       background: linear-gradient(135deg, #0f172a 0%, #881337 50%, #4c0519 100%);
-      color: white; border-radius: var(--radius-lg); padding: 28px 32px;
-      margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.06); position: relative; overflow: hidden;
+      color: white;
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      position: relative;
+      overflow: hidden;
     }
+
     .principal-hero::before {
-      content: ''; position: absolute; right: 30px; top: 50%; transform: translateY(-50%);
-      width: 140px; height: 140px; background: rgba(244,63,94,0.12); border-radius: 50%; filter: blur(40px);
+      content: '';
+      position: absolute;
+      right: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 140px;
+      height: 140px;
+      background: rgba(244, 63, 94, 0.12);
+      border-radius: 50%;
+      filter: blur(40px);
     }
-    .principal-hero h3 { font-family: 'Inter', sans-serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; }
-    .principal-hero p { color: rgba(255,255,255,0.6); font-size: 0.88rem; }
+
+    .principal-hero h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .principal-hero p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.88rem;
+    }
 
     .chart-container-card {
-      background: white; border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 20px 24px; margin-bottom: 20px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 20px;
     }
-    .chart-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-    .chart-header h4 { font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 700; }
+
+    .chart-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .chart-header h4 {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+    }
 
     .vtu-link-box {
-      background: #f8fafc; border: 1.5px dashed var(--accent); border-radius: var(--radius);
-      padding: 20px; text-align: center; margin-bottom: 16px;
+      background: #f8fafc;
+      border: 1.5px dashed var(--accent);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    /* ════════ DIGITAL STUDENT ID CARD & PROFILE CSS ════════ */
+    .id-card-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 0 30px;
+    }
+
+    .id-card-actions {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .student-id-card {
+      width: 360px;
+      max-width: 95vw;
+      background: #ffffff;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.18), 0 0 0 1px rgba(15, 23, 42, 0.08);
+      position: relative;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .id-card-top-accent {
+      height: 6px;
+      background: linear-gradient(90deg, #0d9488, #6366f1, #f43f5e);
+    }
+
+    .id-card-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: white;
+      padding: 16px 14px 12px;
+      text-align: center;
+      position: relative;
+    }
+
+    .id-card-logo-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .id-card-logo {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      border-radius: 50%;
+      background: white;
+      padding: 2px;
+    }
+
+    .id-card-college-name {
+      font-size: 0.88rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .id-card-tagline {
+      font-size: 0.62rem;
+      color: rgba(255, 255, 255, 0.7);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .id-card-badge-row {
+      margin-top: 6px;
+    }
+
+    .id-card-type-badge {
+      display: inline-block;
+      background: #0d9488;
+      color: white;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 2px 10px;
+      border-radius: 20px;
+      letter-spacing: 1px;
+    }
+
+    .id-card-body {
+      padding: 18px 20px 14px;
+      text-align: center;
+    }
+
+    .id-card-photo-wrap {
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 10px;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(135deg, #0d9488, #6366f1);
+      position: relative;
+    }
+
+    .id-card-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      background: #e2e8f0;
+      display: block;
+    }
+
+    .id-card-photo-fallback {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #0f172a;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    .id-card-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+
+    .id-card-usn {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #0d9488;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .id-card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 10px;
+      text-align: left;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.75rem;
+    }
+
+    .id-card-grid-item label {
+      display: block;
+      font-size: 0.62rem;
+      color: #64748b;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .id-card-grid-item span {
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .id-card-qr-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px dashed #cbd5e1;
+    }
+
+    .id-card-qr-box {
+      width: 65px;
+      height: 65px;
+      background: white;
+      padding: 3px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+    }
+
+    .id-card-qr-box img,
+    .id-card-qr-box canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .id-card-sign-box {
+      text-align: right;
+      font-size: 0.68rem;
+      color: #64748b;
+    }
+
+    .id-card-sign-line {
+      width: 90px;
+      height: 1px;
+      background: #0f172a;
+      margin-bottom: 3px;
+      margin-left: auto;
+    }
+
+    .id-card-footer {
+      background: #f1f5f9;
+      padding: 8px 12px;
+      text-align: center;
+      font-size: 0.62rem;
+      color: #64748b;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    /* Profile Pic Uploader Preview in Modal */
+    .profile-pic-preview-wrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .profile-pic-circle {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #e2e8f0;
+      border: 2px solid var(--accent);
+    }
+
+    .profile-pic-fallback {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: var(--ink);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      border: 2px solid var(--accent);
+    }
+
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+
+      #studentIdCardPrintArea,
+      #studentIdCardPrintArea * {
+        visibility: visible !important;
+      }
+
+      #studentIdCardPrintArea {
+        position: absolute !important;
+        left: 50% !important;
+        top: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        border: 1px solid #cbd5e1 !important;
+      }
     }
   </style>
 </head>
@@ -2090,8 +2635,8 @@
               data-lucide="graduation-cap" class="icon-sm"></i> Student</button>
           <button class="role-btn" onclick="selectRole('teacher')" id="roleTeacher"><i data-lucide="presentation"
               class="icon-sm"></i> Teacher</button>
-          <button class="role-btn" onclick="selectRole('hod')" id="roleHod"><i data-lucide="shield"
-              class="icon-sm"></i> HOD</button>
+          <button class="role-btn" onclick="selectRole('hod')" id="roleHod"><i data-lucide="shield" class="icon-sm"></i>
+            HOD</button>
           <button class="role-btn" onclick="selectRole('principal')" id="rolePrincipal"><i data-lucide="award"
               class="icon-sm"></i> Principal</button>
         </div>
@@ -2111,8 +2656,8 @@
         <!-- SIGN IN FORM -->
         <div id="signinForm">
           <div class="auth-field">
-            <label>Email Address</label>
-            <input class="auth-input" type="email" id="siEmail" placeholder="you@example.com">
+            <label id="siLoginLabel">Email Address or USN</label>
+            <input class="auth-input" type="text" id="siEmail" placeholder="you@example.com or 4KT22CS001">
           </div>
           <div class="auth-field">
             <label>Password</label>
@@ -2183,6 +2728,44 @@
                   data-lucide="eye" class="icon-sm"></i></button>
             </div>
           </div>
+          <!-- Student-only fields: USN, Course, Semester -->
+          <div id="studentFieldsWrap">
+            <div class="auth-field">
+              <label>USN (University Seat Number)</label>
+              <input class="auth-input" type="text" id="suUsn" placeholder="e.g. 4KT22CS001"
+                style="text-transform:uppercase;">
+            </div>
+            <div class="auth-field">
+              <label>Course / Branch</label>
+              <select class="auth-input" id="suCourse">
+                <option value="">Select your course…</option>
+                <option value="CSE">Computer Science & Engineering (CSE)</option>
+                <option value="ISE">Information Science & Engineering (ISE)</option>
+                <option value="ECE">Electronics & Communication (ECE)</option>
+                <option value="EEE">Electrical & Electronics (EEE)</option>
+                <option value="ME">Mechanical Engineering (ME)</option>
+                <option value="CE">Civil Engineering (CE)</option>
+                <option value="AIML">AI & Machine Learning (AIML)</option>
+                <option value="DS">Data Science (DS)</option>
+                <option value="MBA">Master of Business Administration (MBA)</option>
+                <option value="MCA">Master of Computer Applications (MCA)</option>
+              </select>
+            </div>
+            <div class="auth-field">
+              <label>Current Semester</label>
+              <select class="auth-input" id="suSemester">
+                <option value="">Select semester…</option>
+                <option value="1">1st Semester</option>
+                <option value="2">2nd Semester</option>
+                <option value="3">3rd Semester</option>
+                <option value="4">4th Semester</option>
+                <option value="5">5th Semester</option>
+                <option value="6">6th Semester</option>
+                <option value="7">7th Semester</option>
+                <option value="8">8th Semester</option>
+              </select>
+            </div>
+          </div>
           <div class="auth-field" id="libCodeWrap" style="display:none">
             <label id="libCodeLabel">Teacher Code</label>
             <div class="pw-wrap">
@@ -2229,7 +2812,7 @@
           src="https://collegesdirectory.in/World/MasterAdmin/College-Master/College_Logo/Logo-303131703.png"
           alt="KIT Logo" onerror="this.style.display='none'">
         <div>
-          <div class="header-title">KIT Smart Attendance</div>
+          <div class="header-title">KIT SMART</div>
           <div class="header-sub">Karavali Institution of Technology</div>
         </div>
       </div>
@@ -2258,14 +2841,14 @@
 
         <!-- Nav (HOD only) -->
         <div class="mode-toggle" id="hodNav" style="display:none">
-          <button class="mode-btn" onclick="switchView('hod')"><i data-lucide="shield"
-              class="icon-sm"></i> HOD Portal</button>
+          <button class="mode-btn" onclick="switchView('hod')"><i data-lucide="shield" class="icon-sm"></i> HOD
+            Portal</button>
         </div>
 
         <!-- Nav (Principal only) -->
         <div class="mode-toggle" id="principalNav" style="display:none">
-          <button class="mode-btn" onclick="switchView('principal')"><i data-lucide="award"
-              class="icon-sm"></i> Principal Portal</button>
+          <button class="mode-btn" onclick="switchView('principal')"><i data-lucide="award" class="icon-sm"></i>
+            Principal Portal</button>
         </div>
 
         <!-- User badge -->
@@ -2282,6 +2865,8 @@
               <div style="font-weight:600;font-size:0.88rem" id="dropdownName">Siddy</div>
               <div class="user-dropdown-email" id="dropdownEmail">s09933664@gmail.com</div>
             </div>
+            <div class="user-dropdown-item" onclick="openProfileModal()"><i data-lucide="user-cog" class="icon-sm"></i>
+              Edit Profile</div>
             <div class="user-dropdown-item danger" onclick="handleSignOut()"><i data-lucide="log-out"
                 class="icon-sm"></i> Sign Out</div>
           </div>
@@ -2295,7 +2880,15 @@
       <div class="view active" id="view-student">
         <div class="student-hero">
           <h2 id="heroGreeting">Hello, Siddy!</h2>
-          <p>Welcome to KIT Smart Attendance</p>
+          <p>Welcome to KIT SMART</p>
+          <div id="studentProfileBadges"
+            style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;justify-content:center;">
+            <span id="studentUsnHeroBadge" class="scheme-badge" style="font-size:0.78rem;padding:4px 12px;"></span>
+            <span id="studentCourseHeroBadge" class="scheme-badge"
+              style="font-size:0.78rem;padding:4px 12px;background:var(--accent);color:#fff;"></span>
+            <span id="studentSemHeroBadge" class="scheme-badge"
+              style="font-size:0.78rem;padding:4px 12px;background:var(--accent2);color:#fff;"></span>
+          </div>
         </div>
 
         <div class="sub-tabs">
@@ -2303,8 +2896,10 @@
               class="icon-sm"></i> Browse</button>
           <button class="sub-tab" id="stTabAttendance" onclick="studentTab('attendance')"><i
               data-lucide="clipboard-check" class="icon-sm"></i> My Attendance</button>
-          <button class="sub-tab" id="stTabVtu" onclick="studentTab('vtu')"><i
-              data-lucide="award" class="icon-sm"></i> VTU Results</button>
+          <button class="sub-tab" id="stTabVtu" onclick="studentTab('vtu')"><i data-lucide="award" class="icon-sm"></i>
+            VTU Results</button>
+          <button class="sub-tab" id="stTabIdCard" onclick="studentTab('idcard')"><i data-lucide="contact-2"
+              class="icon-sm"></i> My ID Card</button>
         </div>
 
         <!-- Browse panel (existing library browsing, if any, lives here) -->
@@ -2314,10 +2909,12 @@
         <div class="att-panel" id="stPanelAttendance">
           <div class="chart-container-card" id="studentChartCard">
             <div class="chart-header">
-              <h4><i data-lucide="bar-chart-2" class="icon-sm" style="color:var(--accent);"></i> Attendance Analytics & Trends</h4>
+              <h4><i data-lucide="bar-chart-2" class="icon-sm" style="color:var(--accent);"></i> Attendance Analytics &
+                Trends</h4>
               <div style="display:flex;gap:10px;align-items:center;">
                 <label style="font-size:0.78rem;color:var(--muted);font-weight:600;">Filter Scheme:</label>
-                <select id="studentSchemeFilter" onchange="loadMyAttendance()" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:0.8rem;outline:none;">
+                <select id="studentSchemeFilter" onchange="loadMyAttendance()"
+                  style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:0.8rem;outline:none;">
                   <option value="">All Schemes</option>
                   <option value="2025">2025 Scheme</option>
                   <option value="2022">2022 Scheme</option>
@@ -2384,6 +2981,80 @@
             <div class="empty-note">Loading VTU results…</div>
           </div>
         </div>
+
+        <!-- ID Card panel -->
+        <div class="att-panel" id="stPanelIdCard">
+          <div class="id-card-wrap">
+            <div class="id-card-actions">
+              <button class="btn btn-primary" onclick="printStudentIdCard()"><i data-lucide="printer"
+                  class="icon-sm"></i> Print / Download ID Card</button>
+              <button class="btn btn-ghost" onclick="openProfileModal()"><i data-lucide="camera" class="icon-sm"></i>
+                Update Photo / Info</button>
+            </div>
+
+            <div id="studentIdCardPrintArea">
+              <div class="student-id-card">
+                <div class="id-card-top-accent"></div>
+                <div class="id-card-header">
+                  <div class="id-card-logo-row">
+                    <img class="id-card-logo"
+                      src="https://collegesdirectory.in/World/MasterAdmin/College-Master/College_Logo/Logo-303131703.png"
+                      alt="KIT">
+                    <div>
+                      <div class="id-card-college-name">Karavali Institute of Technology</div>
+                      <div class="id-card-tagline">Affiliated to VTU | Approved by AICTE</div>
+                    </div>
+                  </div>
+                  <div class="id-card-badge-row">
+                    <span class="id-card-type-badge">Student Identity Card</span>
+                  </div>
+                </div>
+
+                <div class="id-card-body">
+                  <div class="id-card-photo-wrap" id="idCardPhotoWrap">
+                    <img class="id-card-photo" id="idCardPhoto" src="" alt="Student Photo" style="display:none;">
+                    <div class="id-card-photo-fallback" id="idCardPhotoFallback">S</div>
+                  </div>
+
+                  <div class="id-card-name" id="idCardName">Student Name</div>
+                  <div class="id-card-usn" id="idCardUsn">4KT22CS001</div>
+
+                  <div class="id-card-grid">
+                    <div class="id-card-grid-item">
+                      <label>Course / Branch</label>
+                      <span id="idCardCourse">Computer Science (CSE)</span>
+                    </div>
+                    <div class="id-card-grid-item">
+                      <label>Semester</label>
+                      <span id="idCardSemester">4th Semester</span>
+                    </div>
+                    <div class="id-card-grid-item">
+                      <label>Academic Year</label>
+                      <span id="idCardAcademicYear">2024 - 2025</span>
+                    </div>
+                    <div class="id-card-grid-item">
+                      <label>Blood Group</label>
+                      <span id="idCardBloodGroup">O +ve</span>
+                    </div>
+                  </div>
+
+                  <div class="id-card-qr-row">
+                    <div class="id-card-qr-box" id="idCardQrBox"></div>
+                    <div class="id-card-sign-box">
+                      <div class="id-card-sign-line"></div>
+                      <div><strong>Principal</strong></div>
+                      <div>KIT Mangalore</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="id-card-footer">
+                  Mangalore, Karnataka — 575028 | www.karavali.edu.in
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- ═══ TEACHER VIEW ═══ -->
@@ -2400,8 +3071,8 @@
               class="icon-sm"></i> Take Attendance</button>
           <button class="sub-tab" id="tTabReports" onclick="teacherTab('reports')"><i data-lucide="bar-chart-3"
               class="icon-sm"></i> Reports</button>
-          <button class="sub-tab" id="tTabVtu" onclick="teacherTab('vtu')"><i data-lucide="award"
-              class="icon-sm"></i> VTU Results</button>
+          <button class="sub-tab" id="tTabVtu" onclick="teacherTab('vtu')"><i data-lucide="award" class="icon-sm"></i>
+            VTU Results</button>
         </div>
 
         <!-- Subjects panel -->
@@ -2482,10 +3153,12 @@
         <div class="att-panel" id="tPanelVtu">
           <div class="section-head">
             <h3>Student VTU Results (All Semesters)</h3>
-            <button class="btn btn-primary" onclick="openVtuModal()"><i data-lucide="plus" class="icon-sm"></i> Add Student VTU Result</button>
+            <button class="btn btn-primary" onclick="openVtuModal()"><i data-lucide="plus" class="icon-sm"></i> Add
+              Student VTU Result</button>
           </div>
           <div class="student-search-wrap">
-            <input type="text" id="teacherVtuSearch" placeholder="Search by student name, USN, or email…" oninput="renderTeacherVtuResults()">
+            <input type="text" id="teacherVtuSearch" placeholder="Search by student name, USN, or email…"
+              oninput="renderTeacherVtuResults()">
             <select id="teacherVtuSemFilter" onchange="renderTeacherVtuResults()">
               <option value="">All Semesters</option>
               <option value="1">Semester 1</option>
@@ -2512,10 +3185,14 @@
         </div>
 
         <div class="sub-tabs">
-          <button class="sub-tab active" id="hTabOverview" onclick="hodTab('overview')"><i data-lucide="layout-dashboard" class="icon-sm"></i> Department Overview</button>
-          <button class="sub-tab" id="hTabStudents" onclick="hodTab('students')"><i data-lucide="users" class="icon-sm"></i> All Students</button>
-          <button class="sub-tab" id="hTabTeachers" onclick="hodTab('teachers')"><i data-lucide="user-check" class="icon-sm"></i> Faculty Members</button>
-          <button class="sub-tab" id="hTabVtu" onclick="hodTab('vtu')"><i data-lucide="award" class="icon-sm"></i> VTU Results & Reports</button>
+          <button class="sub-tab active" id="hTabOverview" onclick="hodTab('overview')"><i
+              data-lucide="layout-dashboard" class="icon-sm"></i> Department Overview</button>
+          <button class="sub-tab" id="hTabStudents" onclick="hodTab('students')"><i data-lucide="users"
+              class="icon-sm"></i> All Students</button>
+          <button class="sub-tab" id="hTabTeachers" onclick="hodTab('teachers')"><i data-lucide="user-check"
+              class="icon-sm"></i> Faculty Members</button>
+          <button class="sub-tab" id="hTabVtu" onclick="hodTab('vtu')"><i data-lucide="award" class="icon-sm"></i> VTU
+            Results & Reports</button>
         </div>
 
         <!-- HOD Overview Panel -->
@@ -2541,15 +3218,18 @@
 
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
             <div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:20px;">
-              <h4 style="font-family:'Inter',sans-serif;font-size:1rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
-                <i data-lucide="alert-triangle" class="icon-sm" style="color:var(--amber);"></i> Low Attendance Warning (&lt;75%)
+              <h4
+                style="font-family:'Inter',sans-serif;font-size:1rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
+                <i data-lucide="alert-triangle" class="icon-sm" style="color:var(--amber);"></i> Low Attendance Warning
+                (&lt;75%)
               </h4>
               <div id="hodLowAttendanceList" style="max-height:280px;overflow-y:auto;">
                 <div class="empty-note">Calculating…</div>
               </div>
             </div>
             <div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:20px;">
-              <h4 style="font-family:'Inter',sans-serif;font-size:1rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
+              <h4
+                style="font-family:'Inter',sans-serif;font-size:1rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
                 <i data-lucide="award" class="icon-sm" style="color:var(--accent2);"></i> Top Academic Performers
               </h4>
               <div id="hodTopPerformersList" style="max-height:280px;overflow-y:auto;">
@@ -2561,8 +3241,27 @@
 
         <!-- HOD All Students Panel -->
         <div class="att-panel" id="hPanelStudents">
-          <div class="student-search-wrap">
-            <input type="text" id="hodStudentSearch" placeholder="Search student by name, email, or USN…" oninput="renderHodStudentsTable()">
+          <div class="student-search-wrap" style="display:flex;gap:10px;flex-wrap:wrap;">
+            <input type="text" id="hodStudentSearch" placeholder="Search student by name, email, or USN…"
+              oninput="renderHodStudentsTable()" style="flex:1;min-width:200px;">
+            <select id="hodBranchFilter" onchange="renderHodStudentsTable()">
+              <option value="">All Branches</option>
+              <option value="CSE">CSE</option>
+              <option value="ISE">ISE</option>
+              <option value="ECE">ECE</option>
+              <option value="EEE">EEE</option>
+              <option value="ME">ME</option>
+              <option value="CE">CE</option>
+              <option value="AIML">AIML</option>
+              <option value="DS">DS</option>
+            </select>
+            <select id="hodYearFilter" onchange="renderHodStudentsTable()">
+              <option value="">All Years</option>
+              <option value="1">1st Year (Sem 1-2)</option>
+              <option value="2">2nd Year (Sem 3-4)</option>
+              <option value="3">3rd Year (Sem 5-6)</option>
+              <option value="4">4th Year (Sem 7-8)</option>
+            </select>
           </div>
           <div class="table-wrap">
             <table>
@@ -2577,7 +3276,9 @@
                 </tr>
               </thead>
               <tbody id="hodStudentsTableBody">
-                <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px;">Loading student list…</td></tr>
+                <tr>
+                  <td colspan="6" style="text-align:center;color:var(--muted);padding:20px;">Loading student list…</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -2597,7 +3298,9 @@
                 </tr>
               </thead>
               <tbody id="hodTeachersTableBody">
-                <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">Loading faculty list…</td></tr>
+                <tr>
+                  <td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">Loading faculty list…</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -2608,12 +3311,15 @@
           <div class="section-head">
             <h3>VTU Semester Results Management</h3>
             <div style="display:flex;gap:10px;">
-              <button class="btn btn-ghost" onclick="openVtuLinkModal()"><i data-lucide="download-cloud" class="icon-sm"></i> Auto-Fetch Link</button>
-              <button class="btn btn-primary" onclick="openVtuModal()"><i data-lucide="plus" class="icon-sm"></i> Record Manual Result</button>
+              <button class="btn btn-ghost" onclick="openVtuLinkModal()"><i data-lucide="download-cloud"
+                  class="icon-sm"></i> Auto-Fetch Link</button>
+              <button class="btn btn-primary" onclick="openVtuModal()"><i data-lucide="plus" class="icon-sm"></i> Record
+                Manual Result</button>
             </div>
           </div>
           <div class="student-search-wrap">
-            <input type="text" id="hodVtuSearch" placeholder="Search student name, USN, or subject code…" oninput="renderHodVtuResults()">
+            <input type="text" id="hodVtuSearch" placeholder="Search student name, USN, or subject code…"
+              oninput="renderHodVtuResults()">
             <select id="hodVtuSemFilter" onchange="renderHodVtuResults()">
               <option value="">All Semesters (1-8)</option>
               <option value="1">Semester 1</option>
@@ -2640,16 +3346,20 @@
         </div>
 
         <div class="sub-tabs">
-          <button class="sub-tab active" id="pTabActivity" onclick="principalTab('activity')"><i data-lucide="activity" class="icon-sm"></i> Teacher Activity Tracker</button>
-          <button class="sub-tab" id="pTabStudents" onclick="principalTab('students')"><i data-lucide="search" class="icon-sm"></i> Student Inspector</button>
-          <button class="sub-tab" id="pTabAnalytics" onclick="principalTab('analytics')"><i data-lucide="bar-chart-2" class="icon-sm"></i> Analytics & Graphs</button>
+          <button class="sub-tab active" id="pTabActivity" onclick="principalTab('activity')"><i data-lucide="activity"
+              class="icon-sm"></i> Teacher Activity Tracker</button>
+          <button class="sub-tab" id="pTabStudents" onclick="principalTab('students')"><i data-lucide="search"
+              class="icon-sm"></i> Student Inspector</button>
+          <button class="sub-tab" id="pTabAnalytics" onclick="principalTab('analytics')"><i data-lucide="bar-chart-2"
+              class="icon-sm"></i> Analytics & Graphs</button>
         </div>
 
         <!-- Principal Activity Panel -->
         <div class="att-panel active" id="pPanelActivity">
           <div class="section-head">
             <h3>Faculty Activity & Workload Tracker</h3>
-            <button class="btn btn-ghost" onclick="renderPrincipalTeacherActivity()"><i data-lucide="refresh-cw" class="icon-sm"></i> Refresh</button>
+            <button class="btn btn-ghost" onclick="renderPrincipalTeacherActivity()"><i data-lucide="refresh-cw"
+                class="icon-sm"></i> Refresh</button>
           </div>
           <div class="table-wrap">
             <table>
@@ -2664,7 +3374,9 @@
                 </tr>
               </thead>
               <tbody id="principalTeacherActivityBody">
-                <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px;">Loading activity…</td></tr>
+                <tr>
+                  <td colspan="6" style="text-align:center;color:var(--muted);padding:20px;">Loading activity…</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -2672,8 +3384,29 @@
 
         <!-- Principal Student Inspector Panel -->
         <div class="att-panel" id="pPanelStudents">
-          <div class="student-search-wrap">
-            <input type="text" id="principalStudentSearch" placeholder="Search by student name or email…" oninput="renderPrincipalStudentInspector()">
+          <div class="student-search-wrap" style="display:flex;gap:10px;flex-wrap:wrap;">
+            <input type="text" id="principalStudentSearch" placeholder="Search by student name, email, or USN…"
+              oninput="renderPrincipalStudentInspector()" style="flex:1;min-width:200px;">
+            <select id="principalBranchFilter" onchange="renderPrincipalStudentInspector()">
+              <option value="">All Branches</option>
+              <option value="CSE">CSE</option>
+              <option value="ISE">ISE</option>
+              <option value="ECE">ECE</option>
+              <option value="EEE">EEE</option>
+              <option value="ME">ME</option>
+              <option value="CE">CE</option>
+              <option value="AIML">AIML</option>
+              <option value="DS">DS</option>
+              <option value="MBA">MBA</option>
+              <option value="MCA">MCA</option>
+            </select>
+            <select id="principalYearFilter" onchange="renderPrincipalStudentInspector()">
+              <option value="">All Years</option>
+              <option value="1">1st Year (Sem 1-2)</option>
+              <option value="2">2nd Year (Sem 3-4)</option>
+              <option value="3">3rd Year (Sem 5-6)</option>
+              <option value="4">4th Year (Sem 7-8)</option>
+            </select>
             <select id="principalSchemeFilter" onchange="renderPrincipalStudentInspector()">
               <option value="">All Schemes</option>
               <option value="2025">2025 Scheme</option>
@@ -2691,7 +3424,8 @@
           <div class="chart-container-card">
             <div class="chart-header">
               <h4>Institution Attendance Trends</h4>
-              <select id="principalAnalyticsSchemeFilter" onchange="renderPrincipalAnalyticsChart()" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:0.8rem;outline:none;">
+              <select id="principalAnalyticsSchemeFilter" onchange="renderPrincipalAnalyticsChart()"
+                style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:0.8rem;outline:none;">
                 <option value="">Overall Average</option>
                 <option value="2025">2025 Scheme Average</option>
                 <option value="2022">2022 Scheme Average</option>
@@ -2774,10 +3508,13 @@
 
           <div style="margin-top:16px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-              <label style="font-size:0.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;">Subject Marks Breakdown</label>
-              <button class="btn btn-sm btn-ghost" onclick="addVtuSubjectRow()"><i data-lucide="plus" class="icon-sm"></i> Add Subject Row</button>
+              <label style="font-size:0.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;">Subject
+                Marks Breakdown</label>
+              <button class="btn btn-sm btn-ghost" onclick="addVtuSubjectRow()"><i data-lucide="plus"
+                  class="icon-sm"></i> Add Subject Row</button>
             </div>
-            <div style="max-height:200px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--radius-sm);">
+            <div
+              style="max-height:200px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--radius-sm);">
               <table class="marks-table">
                 <thead>
                   <tr>
@@ -2811,7 +3548,8 @@
           <div class="form-grid">
             <div class="form-field full">
               <label>VTU Result URL</label>
-              <input type="text" id="vtuResultLink" placeholder="e.g. https://results.vtu.ac.in/JJEcbcs25/resultpage.php">
+              <input type="text" id="vtuResultLink"
+                placeholder="e.g. https://results.vtu.ac.in/JJEcbcs25/resultpage.php">
             </div>
             <div class="form-field full">
               <label>USN</label>
@@ -2820,10 +3558,101 @@
           </div>
           <div class="modal-actions" style="margin-top:20px;">
             <button class="btn btn-ghost" onclick="closeVtuLinkModal()">Cancel</button>
-            <button class="btn btn-primary" id="vtuFetchBtn" onclick="fetchVtuResultFromLink()">Fetch & Save Result</button>
+            <button class="btn btn-primary" id="vtuFetchBtn" onclick="fetchVtuResultFromLink()">Fetch & Save
+              Result</button>
           </div>
         </div>
-      </div>
+        <!-- Universal Profile Edit Modal -->
+        <div class="modal-bg" id="profileModalBg">
+          <div class="modal" style="width:520px;max-width:95vw;">
+            <h3 id="profileModalTitle">Edit Profile</h3>
+            <p class="muted" style="margin-bottom:16px;">Update your personal details, designation, and profile picture.
+            </p>
+
+            <div class="profile-pic-preview-wrap">
+              <img id="profileModalPicPreview" class="profile-pic-circle" src="" style="display:none;" alt="Preview">
+              <div id="profileModalPicFallback" class="profile-pic-fallback">U</div>
+              <div>
+                <label class="btn btn-sm btn-ghost"
+                  style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
+                  <i data-lucide="upload" class="icon-sm"></i> Upload Photo
+                  <input type="file" id="profilePicInput" accept="image/*" style="display:none;"
+                    onchange="previewProfilePic(event)">
+                </label>
+                <div style="font-size:0.72rem;color:var(--muted);margin-top:4px;">JPG, PNG or WEBP (Max 2MB)</div>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-field full">
+                <label>Full Name</label>
+                <input type="text" id="profName" placeholder="Your full name">
+              </div>
+              <div class="form-field">
+                <label>Phone Number</label>
+                <input type="tel" id="profPhone" placeholder="+91 9876543210">
+              </div>
+              <div class="form-field" id="profBloodGroupField">
+                <label>Blood Group</label>
+                <select id="profBloodGroup">
+                  <option value="O +ve">O +ve</option>
+                  <option value="O -ve">O -ve</option>
+                  <option value="A +ve">A +ve</option>
+                  <option value="A -ve">A -ve</option>
+                  <option value="B +ve">B +ve</option>
+                  <option value="B -ve">B -ve</option>
+                  <option value="AB +ve">AB +ve</option>
+                  <option value="AB -ve">AB -ve</option>
+                </select>
+              </div>
+
+              <!-- Student specific fields -->
+              <div class="form-field full" id="profStudentUsnField" style="display:none;">
+                <label>USN (University Seat Number)</label>
+                <input type="text" id="profUsn" placeholder="e.g. 4KT22CS001" style="text-transform:uppercase;">
+              </div>
+              <div class="form-field" id="profStudentCourseField" style="display:none;">
+                <label>Branch / Course</label>
+                <select id="profCourse">
+                  <option value="CSE">CSE</option>
+                  <option value="ISE">ISE</option>
+                  <option value="ECE">ECE</option>
+                  <option value="EEE">EEE</option>
+                  <option value="ME">ME</option>
+                  <option value="CE">CE</option>
+                  <option value="AIML">AIML</option>
+                  <option value="DS">DS</option>
+                  <option value="MBA">MBA</option>
+                  <option value="MCA">MCA</option>
+                </select>
+              </div>
+              <div class="form-field" id="profStudentSemField" style="display:none;">
+                <label>Current Semester</label>
+                <select id="profSemester">
+                  <option value="1">1st Semester</option>
+                  <option value="2">2nd Semester</option>
+                  <option value="3">3rd Semester</option>
+                  <option value="4">4th Semester</option>
+                  <option value="5">5th Semester</option>
+                  <option value="6">6th Semester</option>
+                  <option value="7">7th Semester</option>
+                  <option value="8">8th Semester</option>
+                </select>
+              </div>
+
+              <div class="form-field full" id="profBioField">
+                <label>Bio / Department</label>
+                <input type="text" id="profBio" placeholder="e.g. Department of Computer Science & Engineering">
+              </div>
+            </div>
+
+            <div class="modal-actions" style="margin-top:20px;">
+              <button class="btn btn-ghost" onclick="closeProfileModal()">Cancel</button>
+              <button class="btn btn-primary" id="profSaveBtn" onclick="saveProfile()"><i data-lucide="check"
+                  class="icon-sm"></i> Save Profile</button>
+            </div>
+          </div>
+        </div>
 
     </main>
 
@@ -2843,7 +3672,7 @@
   <!-- PWA install prompt -->
   <div id="pwaPrompt">
     <div class="pwa-prompt-text">
-      <div class="pwa-prompt-title"><i data-lucide="smartphone" class="icon-sm"></i> Install KIT Smart Attendance</div>
+      <div class="pwa-prompt-title"><i data-lucide="smartphone" class="icon-sm"></i> Install KIT SMART</div>
       <div class="pwa-prompt-sub">Add to home screen for quick access</div>
     </div>
     <button class="btn btn-primary btn-sm" onclick="installPWA()">Install</button>
@@ -3089,7 +3918,7 @@
       const needsCode = (role === 'teacher' || role === 'hod' || role === 'principal');
       const noteLabel = document.getElementById('roleNoteLabel');
       const codeLabel = document.getElementById('libCodeLabel');
-      
+
       if (noteLabel) {
         if (role === 'principal') noteLabel.textContent = 'Principal registration';
         else if (role === 'hod') noteLabel.textContent = 'HOD registration';
@@ -3104,7 +3933,13 @@
       document.getElementById('librarianNote').style.display = needsCode ? 'flex' : 'none';
       const isSignup = document.getElementById('signupForm').style.display !== 'none';
       document.getElementById('libCodeWrap').style.display = (needsCode && isSignup) ? 'block' : 'none';
-      
+
+      // Show/hide student-only fields (USN, Course, Semester)
+      const studentFields = document.getElementById('studentFieldsWrap');
+      if (studentFields) {
+        studentFields.style.display = (role === 'student' && isSignup) ? 'block' : 'none';
+      }
+
       const googleSignupBtn = document.getElementById('googleSignupBtn');
       const googleDivider = document.getElementById('googleDividerSignup');
       if (isSignup && needsCode) {
@@ -3179,14 +4014,27 @@
     async function handleSignIn() {
       const fb = window._firebase;
       if (!fb) { showAuthError('Firebase not configured. Add your Firebase config to the script.'); return; }
-      const email = document.getElementById('siEmail').value.trim();
+      let inputVal = document.getElementById('siEmail').value.trim();
       const pw = document.getElementById('siPassword').value;
-      if (!email || !pw) { showAuthError('Please enter your email and password.'); return; }
+      if (!inputVal || !pw) { showAuthError('Please enter your email/USN and password.'); return; }
 
       const btn = document.getElementById('siBtn');
       btn.disabled = true; btn.textContent = 'Signing in…';
       try {
-        const cred = await fb.signInWithEmailAndPassword(fb.auth, email, pw);
+        let emailToAuth = inputVal;
+        if (!inputVal.includes('@')) {
+          // Look up email by USN
+          const usnQuery = fb.query(fb.collection(fb.db, 'users'), fb.where('usn', '==', inputVal.toUpperCase()));
+          const usnSnap = await fb.getDocs(usnQuery);
+          if (!usnSnap.empty) {
+            emailToAuth = usnSnap.docs[0].data().email;
+          } else {
+            showAuthError('No student account found with this USN: ' + inputVal.toUpperCase());
+            return;
+          }
+        }
+
+        const cred = await fb.signInWithEmailAndPassword(fb.auth, emailToAuth, pw);
         const snap = await fb.getDoc(fb.doc(fb.db, 'users', cred.user.uid));
         const storedRole = snap.exists() ? (snap.data().role || 'student') : 'student';
         if (storedRole !== selectedRole) {
@@ -3194,14 +4042,14 @@
           showAuthError(`This account is registered as a ${storedRole}. Please select the correct role.`);
           return;
         }
-        showToast(`Welcome back, ${cred.user.displayName || email.split('@')[0]}!`, 'hand-metal');
+        showToast(`Welcome back, ${cred.user.displayName || emailToAuth.split('@')[0]}!`, 'hand-metal');
       } catch (err) {
         const msgs = {
-          'auth/user-not-found': 'No account found with this email.',
+          'auth/user-not-found': 'No account found with this email/USN.',
           'auth/wrong-password': 'Incorrect password.',
-          'auth/invalid-email': 'Please enter a valid email.',
+          'auth/invalid-email': 'Please enter a valid email or USN.',
           'auth/too-many-requests': 'Too many attempts. Try again later.',
-          'auth/invalid-credential': 'Invalid email or password.'
+          'auth/invalid-credential': 'Invalid email/USN or password.'
         };
         showAuthError(msgs[err.code] || err.message);
       } finally { btn.disabled = false; btn.textContent = 'Sign In'; }
@@ -3217,6 +4065,18 @@
 
       if (!name || !email || !pw) { showAuthError('Please fill all fields.'); return; }
       if (pw.length < 6) { showAuthError('Password must be at least 6 characters.'); return; }
+
+      // Student-specific validation
+      let usn = '', course = '', semester = '';
+      if (selectedRole === 'student') {
+        usn = (document.getElementById('suUsn')?.value || '').trim().toUpperCase();
+        course = document.getElementById('suCourse')?.value || '';
+        semester = document.getElementById('suSemester')?.value || '';
+        if (!usn || !course || !semester) {
+          showAuthError('Please fill in USN, Course, and Semester.');
+          return;
+        }
+      }
 
       if (selectedRole === 'teacher') {
         const code = document.getElementById('libCode').value;
@@ -3234,9 +4094,16 @@
       try {
         const cred = await fb.createUserWithEmailAndPassword(fb.auth, email, pw);
         await fb.updateProfile(cred.user, { displayName: name });
-        await fb.setDoc(fb.doc(fb.db, 'users', cred.user.uid), {
+
+        const userData = {
           name, email, role: selectedRole, createdAt: new Date().toISOString()
-        });
+        };
+        if (selectedRole === 'student') {
+          userData.usn = usn;
+          userData.course = course;
+          userData.semester = semester;
+        }
+        await fb.setDoc(fb.doc(fb.db, 'users', cred.user.uid), userData);
         showToast(`Welcome to KIT Smart Attendance, ${name}!`, 'party-popper');
       } catch (err) {
         const msgs = {
@@ -3361,6 +4228,7 @@
         const g = document.getElementById('heroGreeting'); if (g) g.textContent = `Hello, ${name}!`;
         renderStudentQR();
         loadMyAttendance();
+        loadStudentProfileBadges();
       } else if (view === 'teacher') {
         document.querySelectorAll('.mode-btn')[0]?.classList.add('active');
         document.getElementById('mobileTeacherBtn')?.classList.add('active');
@@ -3758,6 +4626,35 @@
       new QRCode(box, { text: window.currentUser.uid, width: 200, height: 200, colorDark: '#0f172a', colorLight: '#ffffff' });
     }
 
+    async function loadStudentProfileBadges() {
+      if (!window.currentUser) return;
+      const fb = window._firebase;
+      try {
+        const snap = await fb.getDoc(fb.doc(fb.db, 'users', window.currentUser.uid));
+        if (snap.exists()) {
+          const data = snap.data();
+          const usnBadge = document.getElementById('studentUsnHeroBadge');
+          const courseBadge = document.getElementById('studentCourseHeroBadge');
+          const semBadge = document.getElementById('studentSemHeroBadge');
+
+          if (usnBadge) {
+            usnBadge.textContent = data.usn ? `USN: ${data.usn}` : 'USN: Not Set';
+            usnBadge.style.display = data.usn ? 'inline-flex' : 'none';
+          }
+          if (courseBadge) {
+            courseBadge.textContent = data.course ? `Branch: ${data.course}` : '';
+            courseBadge.style.display = data.course ? 'inline-flex' : 'none';
+          }
+          if (semBadge) {
+            semBadge.textContent = data.semester ? `Semester ${data.semester}` : '';
+            semBadge.style.display = data.semester ? 'inline-flex' : 'none';
+          }
+        }
+      } catch (e) {
+        console.error('Error loading student profile badges:', e);
+      }
+    }
+
     let studentChartInstance = null;
 
     async function loadMyAttendance() {
@@ -3771,13 +4668,13 @@
         if (schemeFilter) {
           subjects = subjects.filter(s => (s.scheme || '2022') === schemeFilter);
         }
-        
-        if (!subjects.length) { 
-          body.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">No subjects found ${schemeFilter ? 'for ' + schemeFilter + ' scheme' : ''}</td></tr>`; 
+
+        if (!subjects.length) {
+          body.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">No subjects found ${schemeFilter ? 'for ' + schemeFilter + ' scheme' : ''}</td></tr>`;
           if (studentChartInstance) { studentChartInstance.destroy(); studentChartInstance = null; }
-          return; 
+          return;
         }
-        
+
         const myUid = window.currentUser.uid;
         const rows = await Promise.all(subjects.map(async sub => {
           const snap = await fb.getDocs(fb.query(fb.collection(fb.db, 'attendanceSessions'), fb.where('subjectId', '==', sub.id)));
@@ -3823,7 +4720,7 @@
               responsive: true,
               maintainAspectRatio: false,
               scales: {
-                y: { beginAtZero: true, max: 100, ticks: { callback: function(value) { return value + '%' } } }
+                y: { beginAtZero: true, max: 100, ticks: { callback: function (value) { return value + '%' } } }
               },
               plugins: {
                 legend: { display: false }
@@ -4227,13 +5124,20 @@
 
         tbody.innerHTML = filtered.map(s => {
           const studentResults = vtuResults.filter(r => r.studentUid === s.uid);
-          const usn = studentResults.length ? (studentResults[0].usn || '-') : '-';
+          const usn = s.usn || (studentResults.length ? (studentResults[0].usn || '-') : '-');
+          const course = s.course || '';
+          const sem = s.semester ? `Sem ${s.semester}` : '';
           const sgpas = studentResults.map(r => Number(r.sgpa) || 0);
           const cgpa = sgpas.length ? (sgpas.reduce((a, b) => a + b, 0) / sgpas.length).toFixed(2) : 'N/A';
 
           return `
             <tr>
-              <td class="title-cell">${escapeHtml(s.name)} <br><span style="font-size:0.72rem;color:var(--muted);font-family:'DM Mono',monospace;">USN: ${escapeHtml(usn)}</span></td>
+              <td class="title-cell">
+                ${escapeHtml(s.name)} 
+                <br><span style="font-size:0.75rem;color:var(--ink-light);font-family:'DM Mono',monospace;font-weight:600;">USN: ${escapeHtml(usn)}</span>
+                ${course ? `<span class="scheme-badge" style="font-size:0.7rem;margin-left:4px;padding:2px 6px;">${escapeHtml(course)}</span>` : ''}
+                ${sem ? `<span class="scheme-badge" style="font-size:0.7rem;margin-left:2px;padding:2px 6px;background:var(--accent2);">${escapeHtml(sem)}</span>` : ''}
+              </td>
               <td class="author-cell">${escapeHtml(s.email)}</td>
               <td><span class="pct-badge pct-good">Active</span></td>
               <td><span class="sgpa-badge ${cgpa !== 'N/A' && Number(cgpa) >= 7.5 ? 'sgpa-good' : 'sgpa-mid'}">${cgpa}</span></td>
@@ -4338,11 +5242,11 @@
         tbody.innerHTML = teachers.map(t => {
           const tSubs = subjects.filter(s => s.teacherId === t.uid || (s.teacherName || '').includes(t.name));
           const tSessions = sessions.filter(s => s.teacherId === t.uid || (s.teacherName || '').includes(t.name));
-          
+
           let totalMarked = 0;
           tSessions.forEach(s => totalMarked += (s.presentUids || []).length);
-          
-          tSessions.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+          tSessions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
           const lastSessionDate = tSessions.length ? new Date(tSessions[0].createdAt).toLocaleDateString() : 'Never';
 
           return `
@@ -4370,17 +5274,21 @@
 
         let filtered = students;
         if (q) {
-          filtered = filtered.filter(s => (s.name || '').toLowerCase().includes(q) || (s.email || '').toLowerCase().includes(q));
+          filtered = filtered.filter(s =>
+            (s.name || '').toLowerCase().includes(q) ||
+            (s.email || '').toLowerCase().includes(q) ||
+            (s.usn || '').toLowerCase().includes(q) ||
+            (s.course || '').toLowerCase().includes(q)
+          );
         }
 
         if (schemeFilter) {
           filtered = filtered.filter(s => {
-             const sResults = vtuResults.filter(r => r.studentUid === s.uid);
-             if(!sResults.length) return false;
-             const usn = sResults[0].usn || '';
-             if (usn.length < 5) return false;
-             const yearPart = usn.substring(3,5);
-             return yearPart === schemeFilter.substring(2,4); 
+            const sResults = vtuResults.filter(r => r.studentUid === s.uid);
+            const usn = s.usn || (sResults.length ? (sResults[0].usn || '') : '');
+            if (usn.length < 5) return false;
+            const yearPart = usn.substring(3, 5);
+            return yearPart === schemeFilter.substring(2, 4);
           });
         }
 
@@ -4388,15 +5296,21 @@
 
         container.innerHTML = filtered.slice(0, 50).map(s => {
           const studentResults = vtuResults.filter(r => r.studentUid === s.uid);
-          const usn = studentResults.length ? (studentResults[0].usn || '-') : '-';
+          const usn = s.usn || (studentResults.length ? (studentResults[0].usn || '-') : '-');
+          const course = s.course || '';
+          const sem = s.semester ? `Semester ${s.semester}` : '';
           const sgpas = studentResults.map(r => Number(r.sgpa) || 0);
           const cgpa = sgpas.length ? (sgpas.reduce((a, b) => a + b, 0) / sgpas.length).toFixed(2) : 'N/A';
           return `
-            <div style="padding:12px;border:1px solid var(--border);border-radius:6px;margin-bottom:10px;background:var(--surface);">
-              <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="padding:14px;border:1px solid var(--border);border-radius:8px;margin-bottom:10px;background:var(--surface);">
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
                  <div>
-                   <h4 style="margin:0;font-size:1rem;">${escapeHtml(s.name)}</h4>
-                   <p style="margin:2px 0 0 0;font-size:0.8rem;color:var(--muted);font-family:'DM Mono',monospace;">USN: ${escapeHtml(usn)} | ${escapeHtml(s.email)}</p>
+                   <h4 style="margin:0;font-size:1rem;display:flex;align-items:center;gap:6px;">
+                     ${escapeHtml(s.name)}
+                     ${course ? `<span class="scheme-badge" style="font-size:0.72rem;padding:2px 8px;">${escapeHtml(course)}</span>` : ''}
+                     ${sem ? `<span class="scheme-badge" style="font-size:0.72rem;padding:2px 8px;background:var(--accent2);color:#fff;">${escapeHtml(sem)}</span>` : ''}
+                   </h4>
+                   <p style="margin:4px 0 0 0;font-size:0.8rem;color:var(--muted);font-family:'DM Mono',monospace;">USN: <strong style="color:var(--ink);">${escapeHtml(usn)}</strong> | ${escapeHtml(s.email)}</p>
                  </div>
                  <div style="text-align:right;">
                    <span class="sgpa-badge ${cgpa !== 'N/A' && Number(cgpa) >= 7.5 ? 'sgpa-good' : 'sgpa-mid'}">CGPA: ${cgpa}</span>
@@ -4421,7 +5335,7 @@
         ]);
         const sessions = sessionsSnap.docs.map(d => d.data());
         const schemeFilter = document.getElementById('principalAnalyticsSchemeFilter')?.value;
-        
+
         let filteredSubjects = subjects;
         if (schemeFilter) filteredSubjects = subjects.filter(s => (s.scheme || '2022') === schemeFilter);
 
@@ -4468,32 +5382,32 @@
     //  VTU LINK SCRAPER LOGIC
     // ══════════════════════════════════════════
     function openVtuLinkModal() {
-       document.getElementById('vtuLinkModalBg').classList.add('open');
+      document.getElementById('vtuLinkModalBg').classList.add('open');
     }
-    
+
     function closeVtuLinkModal() {
-       document.getElementById('vtuLinkModalBg').classList.remove('open');
+      document.getElementById('vtuLinkModalBg').classList.remove('open');
     }
-    
+
     function fetchVtuResultFromLink() {
-       const link = document.getElementById('vtuResultLink').value;
-       const btn = document.getElementById('vtuFetchBtn');
-       if (!link) { showToast('Please enter a valid VTU result link.', 'alert-circle'); return; }
-       
-       btn.disabled = true;
-       btn.innerHTML = '<i data-lucide="loader" class="icon-sm"></i> Scraping VTU Results...';
-       if (typeof lucide !== 'undefined') lucide.createIcons();
-       
-       // Simulate scraping delay
-       setTimeout(() => {
-          showToast('VTU link scraped successfully! Result data imported.', 'check-circle');
-          closeVtuLinkModal();
-          btn.disabled = false;
-          btn.textContent = "Fetch & Save Result";
-          
-          // Force a reload of HOD VTU results if in HOD view
-          renderHodVtuResults();
-       }, 2500);
+      const link = document.getElementById('vtuResultLink').value;
+      const btn = document.getElementById('vtuFetchBtn');
+      if (!link) { showToast('Please enter a valid VTU result link.', 'alert-circle'); return; }
+
+      btn.disabled = true;
+      btn.innerHTML = '<i data-lucide="loader" class="icon-sm"></i> Scraping VTU Results...';
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+
+      // Simulate scraping delay
+      setTimeout(() => {
+        showToast('VTU link scraped successfully! Result data imported.', 'check-circle');
+        closeVtuLinkModal();
+        btn.disabled = false;
+        btn.textContent = "Fetch & Save Result";
+
+        // Force a reload of HOD VTU results if in HOD view
+        renderHodVtuResults();
+      }, 2500);
     }
 
     // ══════════ USER DROPDOWN ══════════
