@@ -40,15 +40,17 @@
     // ════════════════════════════════════════════════════════════
     //  FIREBASE CONFIG
     // ════════════════════════════════════════════════════════════
-    const firebaseConfig = {
-      apiKey: "AIzaSyCDcaXYIO-lDB_WJcyJrMCBG6ww9nRrY8w",
-      authDomain: "smart-attendance-26e62.firebaseapp.com",
-      projectId: "smart-attendance-26e62",
-      storageBucket: "smart-attendance-26e62.firebasestorage.app",
-      messagingSenderId: "421373704972",
-      appId: "1:421373704972:web:98139ca74bcb3e62212729",
-      measurementId: "G-WFJM11RJTV"
-    };
+   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCDcaXYIO-lDB_WJcyJrMCBG6ww9nRrY8w",
+  authDomain: "smart-attendance-26e62.firebaseapp.com",
+  databaseURL: "https://smart-attendance-26e62-default-rtdb.firebaseio.com",
+  projectId: "smart-attendance-26e62",
+  storageBucket: "smart-attendance-26e62.firebasestorage.app",
+  messagingSenderId: "421373704972",
+  appId: "1:421373704972:web:98139ca74bcb3e62212729",
+  measurementId: "G-WFJM11RJTV"
+};
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
