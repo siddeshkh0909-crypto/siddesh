@@ -5852,6 +5852,392 @@ const firebaseConfig = {
       </div>
     </div>
   </div>
+
+
+  <script> /* KIT SMART patch. Paste inside a <script> tag just before </body> (after your main script). */
+(function () {
+  const $ = id => document.getElementById(id);
+  const val = id => ($(id) || {}).value || '';
+  const ic = () => window.lucide && lucide.createIcons();
+  const toast = (m, i) => showToast(m, i);
+  const esc = s => escapeHtml(s);
+  const fbx = () => window._firebase;
+  const role = () => window.currentUserRole;
+  const gp = t => t >= 90 ? 10 : t >= 80 ? 9 : t >= 70 ? 8 : t >= 60 ? 7 : t >= 55 ? 6 : t >= 50 ? 5 : t >= 40 ? 4 : 0;
+  const barCol = p => p >= 75 ? '#22c55e' : p >= 50 ? '#eab308' : '#ef4444';
+  const USN_RE = /^\d[A-Z]{2}\d{2}[A-Z]{2,3}\d{3}$/;
+
+  /* ---------- 1. Startup fixes ---------- */
+  if (!window.currentUser) { $('authOverlay').style.display = 'flex'; $('appShell').style.display = 'none'; }
+  const pm = $('profileModalBg'); if (pm) document.body.appendChild(pm);   // was nested inside another modal
+  const lm = $('vtuLinkModalBg'); if (lm) lm.remove();                      // fake "scraper" removed
+  const ig = $('installGuide'); if (ig) ig.remove();                        // stray always-visible install popup
+  $('userName').textContent = ''; $('dropdownName').textContent = ''; $('dropdownEmail').textContent = '';
+  const lb = document.querySelector('[onclick="openVtuLinkModal()"]');
+  if (lb) { lb.setAttribute('onclick', "window.open('https://results.vtu.ac.in','_blank')"); lb.innerHTML = '<i data-lucide="external-link" class="icon-sm"></i> Open VTU Results Site'; }
+  const th6 = document.querySelector('#vtuModalSubjectsBody')?.closest('table')?.querySelector('thead th:nth-child(6)');
+  if (th6) { const t = document.createElement('th'); t.textContent = 'Credits'; th6.before(t); }
+  const sb = $('stTabBrowse'); if (sb) sb.innerHTML = '<i data-lucide="layout-dashboard" class="icon-sm"></i> Overview';
+  const ah = document.querySelector('#pPanelAnalytics .chart-header h4'); if (ah) ah.textContent = 'Average Attendance % by Subject';
+
+  /* ---------- 2. Helpers ---------- */
+  window.todayStr = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }; // local date, not UTC
+  const scope = l => { const d = window.currentUserDoc || {}; return role() === 'hod' && d.course ? l.filter(s => s.course === d.course) : l; };
+  const att = (uid, subs, sessions) => {
+    const per = subs.map(s => { const ss = sessions.filter(x => x.subjectId === s.id); const p = ss.filter(x => (x.presentUids || []).includes(uid)).length; return { sub: s, total: ss.length, present: p, pct: ss.length ? Math.round(p / ss.length * 100) : 0 }; });
+    const T = per.reduce((a, b) => a + b.total, 0), P = per.reduce((a, b) => a + b.present, 0);
+    return { per, total: T, present: P, pct: T ? Math.round(P / T * 100) : 0 };
+  };
+  const cgpa = r => { let w = 0, c = 0; r.forEach(x => { const k = Number(x.totalCredits) || 24; w += (Number(x.sgpa) || 0) * k; c += k; }); return c ? (w / c).toFixed(2) : 'N/A'; };
+  async function loadAll() {
+    const fb = fbx();
+    const [ss, subs, vtu, stu] = await Promise.all([fb.getDocs(fb.collection(fb.db, 'attendanceSessions')), fetchAllSubjects(), fetchAllVtuResults(), loadAllStudentsCache()]);
+    return { sessions: ss.docs.map(d => d.data()), subs, vtu, students: scope(stu) };
+  }
+  function chartOn(id, cfg) { const c = $(id); if (!c) return; window._ch = window._ch || {}; if (_ch[id]) _ch[id].destroy(); _ch[id] = new Chart(c, cfg); }
+  function sgpaChart(id, res) {
+    chartOn(id, { type: 'line', data: { labels: res.map(r => 'Sem ' + r.semester), datasets: [{ label: 'SGPA', data: res.map(r => Number(r.sgpa) || 0), borderColor: '#6366f1', backgroundColor: 'rgba(99,102,241,.12)', fill: true, tension: .3 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 0, max: 10 } }, plugins: { legend: { display: false } } } });
+  }
+  const tile = (n, l, c) => `<div class="hod-stat-card"><div class="hod-stat-num" ${c ? `style="color:${c}"` : ''}>${n}</div><div class="hod-stat-label">${l}</div></div>`;
+
+  /* ---------- 3. Auth: fix role-routing race + USN login ---------- */
+  window.kitRoute = async function (user) {
+    const fb = fbx(); window.currentUser = user;
+    let d = {}; try { const s = await fb.getDoc(fb.doc(fb.db, 'users', user.uid)); d = s.exists() ? s.data() : {}; } catch (e) { }
+    window.currentUserDoc = d; window.currentUserRole = d.role || 'student';
+    const r = role();
+    $('authOverlay').style.display = 'none'; $('appShell').style.display = 'block';
+    updateHeaderUser(user); paintAvatar();
+    $('studentOnlyBtns').style.display = r === 'student' ? 'flex' : 'none';
+    $('teacherNav').style.display = r === 'teacher' ? 'flex' : 'none';
+    $('hodNav').style.display = r === 'hod' ? 'flex' : 'none';
+    $('principalNav').style.display = r === 'principal' ? 'flex' : 'none';
+    switchView(r); ic();
+  };
+  function paintAvatar() { const d = window.currentUserDoc || {}; if (d.photoData) $('userAvatar').innerHTML = `<img src="${d.photoData}" alt="">`; }
+  async function emailForUsn(usn) {
+    const fb = fbx();
+    try { const s = await fb.getDoc(fb.doc(fb.db, 'usnIndex', usn)); if (s.exists()) return s.data().email; } catch (e) { }
+    try { const q = await fb.getDocs(fb.query(fb.collection(fb.db, 'users'), fb.where('usn', '==', usn))); if (!q.empty) return q.docs[0].data().email; } catch (e) { }
+    return null;
+  }
+  const authMsg = e => ({ 'auth/user-not-found': 'No account found.', 'auth/wrong-password': 'Incorrect password.', 'auth/invalid-credential': 'Invalid email/USN or password.', 'auth/invalid-email': 'Enter a valid email.', 'auth/too-many-requests': 'Too many attempts. Try later.', 'auth/email-already-in-use': 'An account with this email already exists.', 'auth/weak-password': 'Password must be at least 6 characters.' }[e.code] || e.message);
+
+  window.handleSignIn = async function () {
+    const fb = fbx(), v = val('siEmail').trim(), pw = val('siPassword');
+    if (!v || !pw) return showAuthError('Please enter your email/USN and password.');
+    const btn = $('siBtn'); btn.disabled = true; btn.textContent = 'Signing in…'; window._suppressAuthRoute = true;
+    try {
+      let email = v;
+      if (!v.includes('@')) { email = await emailForUsn(v.toUpperCase()); if (!email) return showAuthError('No student account found for this USN.'); }
+      const cred = await fb.signInWithEmailAndPassword(fb.auth, email, pw);
+      const s = await fb.getDoc(fb.doc(fb.db, 'users', cred.user.uid));
+      const r = s.exists() ? (s.data().role || 'student') : 'student';
+      if (r !== selectedRole) { await fb.signOut(fb.auth); return showAuthError(`This account is registered as a ${r}. Select the correct role.`); }
+      window._suppressAuthRoute = false; await kitRoute(cred.user);
+      toast('Welcome back, ' + (cred.user.displayName || email.split('@')[0]) + '!', 'hand-metal');
+    } catch (e) { showAuthError(authMsg(e)); }
+    finally { window._suppressAuthRoute = false; btn.disabled = false; btn.textContent = 'Sign In'; }
+  };
+
+  window.handleSignUp = async function () {
+    const fb = fbx(), name = val('suName').trim(), email = val('suEmail').trim(), pw = val('suPassword');
+    if (!name || !email || !pw) return showAuthError('Please fill all fields.');
+    if (pw.length < 6) return showAuthError('Password must be at least 6 characters.');
+    let usn = '', course = val('suCourse'), sem = val('suSemester');
+    if (selectedRole === 'student') {
+      usn = val('suUsn').trim().toUpperCase();
+      if (!usn || !course || !sem) return showAuthError('Please fill in USN, Course and Semester.');
+      if (!USN_RE.test(usn)) return showAuthError('USN format looks wrong. Example: 4KT22CS001');
+      try { const e = await fb.getDoc(fb.doc(fb.db, 'usnIndex', usn)); if (e.exists()) return showAuthError('This USN is already registered.'); } catch (e) { }
+    }
+    if (selectedRole === 'hod' && !course) return showAuthError('Please select your department.');
+    const codes = { teacher: TEACHER_SECRET, hod: HOD_SECRET, principal: PRINCIPAL_SECRET };
+    if (codes[selectedRole] && val('libCode') !== codes[selectedRole]) return showAuthError('Invalid authorization code.');
+    const btn = $('suBtn'); btn.disabled = true; btn.textContent = 'Creating account…'; window._suppressAuthRoute = true;
+    try {
+      const cred = await fb.createUserWithEmailAndPassword(fb.auth, email, pw);
+      await fb.updateProfile(cred.user, { displayName: name });
+      const data = { name, email, role: selectedRole, createdAt: new Date().toISOString() };
+      if (selectedRole === 'student') { data.usn = usn; data.course = course; data.semester = sem; }
+      if (selectedRole === 'hod') data.course = course;
+      await fb.setDoc(fb.doc(fb.db, 'users', cred.user.uid), data);
+      if (usn) await fb.setDoc(fb.doc(fb.db, 'usnIndex', usn), { email, uid: cred.user.uid });
+      window._suppressAuthRoute = false; await kitRoute(cred.user);
+      toast('Welcome, ' + name + '!', 'party-popper');
+    } catch (e) { showAuthError(authMsg(e)); }
+    finally { window._suppressAuthRoute = false; btn.disabled = false; btn.textContent = 'Create Account'; }
+  };
+
+  const _sel = window.selectRole;
+  window.selectRole = function (r) {
+    _sel(r);
+    const su = $('signupForm').style.display !== 'none', w = $('studentFieldsWrap'), f = id => $(id).closest('.auth-field');
+    if (su && (r === 'student' || r === 'hod')) {
+      w.style.display = 'block';
+      f('suUsn').style.display = f('suSemester').style.display = r === 'student' ? '' : 'none';
+      f('suCourse').querySelector('label').textContent = r === 'hod' ? 'Department' : 'Course / Branch';
+    }
+  };
+
+  /* ---------- 4. Caching / misc fixes ---------- */
+  let _cT = 0;
+  window.loadAllStudentsCache = async function () {
+    if (allStudentsCache && Date.now() - _cT < 60000) return allStudentsCache;
+    const fb = fbx();
+    const s = await fb.getDocs(fb.query(fb.collection(fb.db, 'users'), fb.where('role', '==', 'student')));
+    allStudentsCache = s.docs.map(d => ({ uid: d.id, ...d.data() })); _cT = Date.now(); return allStudentsCache;
+  };
+  const _ss = window.startAttendanceSession;
+  window.startAttendanceSession = async function () { allStudentsCache = null; return _ss(); };
+  const _fa = window.fetchAllVtuResults;
+  window.fetchAllVtuResults = async function () {
+    if (role() === 'student') { const fb = fbx(); const s = await fb.getDocs(fb.query(fb.collection(fb.db, 'vtuResults'), fb.where('studentUid', '==', window.currentUser.uid))); return s.docs.map(d => ({ id: d.id, ...d.data() })); }
+    return _fa();
+  };
+  window.renderSubjectGrid = function (subs) {   // fixes names with apostrophes breaking inline onclick
+    const g = $('subjectGrid');
+    if (!subs.length) { g.innerHTML = '<div class="empty-note">No subjects yet.</div>'; return; }
+    g.innerHTML = subs.map(s => `<div class="subject-card"><div class="subject-card-name">${esc(s.name)} <span class="scheme-badge">${esc(s.scheme || '2022')}</span></div><div class="subject-card-code">${esc(s.code)}</div><div class="subject-card-teacher"><i data-lucide="user" class="icon-sm"></i> ${esc(s.teacherName || '')}</div><div class="subject-card-actions"><button class="btn btn-sm btn-ghost" data-id="${esc(s.id)}" data-name="${esc(s.name)}" data-code="${esc(s.code)}" data-scheme="${esc(s.scheme || '2022')}" onclick="openSubjectModal(this.dataset.id,this.dataset.name,this.dataset.code,this.dataset.scheme)"><i data-lucide="pencil" class="icon-sm"></i> Edit</button> <button class="btn btn-sm btn-danger" onclick="deleteSubject('${esc(s.id)}')"><i data-lucide="trash-2" class="icon-sm"></i> Delete</button></div></div>`).join('');
+    ic();
+  };
+
+  /* ---------- 5. VTU results: credits, real SGPA, edit, no fake data ---------- */
+  window.addVtuSubjectRow = function (code, name, internal, external, total, result, credits) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><input type="text" placeholder="22CS31" value="${escapeAttr(code || '')}"></td><td><input type="text" placeholder="Subject" value="${escapeAttr(name || '')}"></td><td><input type="number" min="0" max="50" placeholder="50" value="${internal ?? ''}" oninput="calcVtuTotalRow(this)"></td><td><input type="number" min="0" max="50" placeholder="50" value="${external ?? ''}" oninput="calcVtuTotalRow(this)"></td><td><input type="number" value="${total ?? ''}" readonly style="background:var(--paper);font-weight:600;"></td><td><input type="number" min="0" max="10" value="${credits ?? 4}"></td><td><select><option value="P" ${result === 'P' ? 'selected' : ''}>PASS (P)</option><option value="F" ${result === 'F' ? 'selected' : ''}>FAIL (F)</option><option value="A" ${result === 'A' ? 'selected' : ''}>ABSENT (A)</option></select></td><td><button class="btn btn-sm btn-danger" style="padding:2px 6px" onclick="this.closest('tr').remove()">×</button></td>`;
+    $('vtuModalSubjectsBody').appendChild(tr);
+  };
+  const _ov = window.openVtuModal;
+  window.openVtuModal = async function (id) {
+    await _ov(id);
+    if (!id) { $('vtuModalSubjectsBody').innerHTML = ''; addVtuSubjectRow(); return; }   // no pre-filled sample marks
+    const f = (await fetchAllVtuResults()).find(r => r.id === id);
+    if (f) [...$('vtuModalSubjectsBody').querySelectorAll('tr')].forEach((tr, i) => { tr.querySelectorAll('input')[5].value = (f.subjects[i] || {}).credits ?? 4; });
+  };
+  window.autofillStudentUsn = async function () {
+    const u = val('vtuModalStudentSelect'), s = (await loadAllStudentsCache()).find(x => x.uid === u);
+    if (s && s.usn) $('vtuModalUsn').value = s.usn;
+  };
+  window.saveVtuResult = async function () {
+    const fb = fbx(), uid = val('vtuModalStudentSelect'), usn = val('vtuModalUsn').trim().toUpperCase(), sem = val('vtuModalSemester');
+    if (!uid || !usn) return toast('Select a student and enter USN.', 'alert-circle');
+    const st = (await loadAllStudentsCache()).find(s => s.uid === uid) || {};
+    if (st.usn && st.usn.toUpperCase() !== usn) return toast('USN does not match this student’s registered USN.', 'alert-circle');
+    const subjects = [...document.querySelectorAll('#vtuModalSubjectsBody tr')].map(tr => { const i = tr.querySelectorAll('input'); return { code: i[0].value.trim(), name: i[1].value.trim(), internal: +i[2].value || 0, external: +i[3].value || 0, total: +i[4].value || 0, credits: +i[5].value || 0, result: tr.querySelector('select').value }; }).filter(s => s.code || s.name);
+    if (!subjects.length) return toast('Add at least one subject.', 'alert-circle');
+    const cr = subjects.reduce((a, s) => a + s.credits, 0);
+    let sgpa = parseFloat(val('vtuModalSgpa'));
+    if (isNaN(sgpa)) sgpa = cr ? +(subjects.reduce((a, s) => a + s.credits * (s.result === 'P' ? gp(s.total) : 0), 0) / cr).toFixed(2) : 0;   // credit-weighted grade points
+    const btn = $('vtuSaveBtn'); btn.disabled = true; btn.textContent = 'Saving…';
+    try {
+      await fb.setDoc(fb.doc(fb.db, 'vtuResults', uid + '_sem' + sem), { studentUid: uid, studentName: st.name || 'Unknown', studentEmail: st.email || '', usn, semester: +sem, sgpa, totalCredits: cr || 24, resultStatus: subjects.some(s => s.result !== 'P') ? 'FAIL' : 'PASS', subjects, addedBy: window.currentUser.uid, addedAt: new Date().toISOString() }, { merge: true });
+      toast('Result saved (SGPA ' + sgpa + ')', 'check-circle'); closeVtuModal();
+      if (role() === 'hod') renderHodVtuResults(); if (role() === 'teacher') renderTeacherVtuResults();
+    } catch (e) { toast('Error: ' + e.message, 'alert-circle'); }
+    finally { btn.disabled = false; btn.textContent = 'Save VTU Result'; }
+  };
+  const _rc = window.renderSemesterResultCard;
+  window.renderSemesterResultCard = function (r, sn) {
+    let h = _rc(r, sn);
+    if (role() === 'hod' || role() === 'teacher') h = h.replace('<div class="vtu-semester-meta">', `<div class="vtu-semester-meta"><button class="btn btn-sm btn-ghost" onclick="event.stopPropagation();openVtuModal('${esc(r.id)}')">Edit</button>`);
+    return h;
+  };
+
+  /* ---------- 6. USN lookup (teacher / HOD / principal) ---------- */
+  ['teacher', 'hod', 'principal'].forEach(p => {
+    const view = $('view-' + p), tabs = view.querySelector('.sub-tabs');
+    const b = document.createElement('button'); b.className = 'sub-tab'; b.id = p + 'LookupTab'; b.setAttribute('onclick', `lookupTab('${p}')`);
+    b.innerHTML = '<i data-lucide="search" class="icon-sm"></i> USN Lookup'; tabs.appendChild(b);
+    const d = document.createElement('div'); d.className = 'att-panel'; d.id = p + 'LookupPanel';
+    d.innerHTML = `<div class="student-search-wrap"><input id="${p}LookupInput" placeholder="Enter USN, e.g. 4KT22CS001" style="text-transform:uppercase" onkeydown="if(event.key==='Enter')lookupUsn('${p}')"><button class="btn btn-primary" onclick="lookupUsn('${p}')"><i data-lucide="search" class="icon-sm"></i> Search</button></div><div id="${p}LookupOut"><div class="empty-note">Enter a USN to see the student’s profile, subject-wise attendance, results and graphs.</div></div>`;
+    view.appendChild(d);
+    const o = window[p + 'Tab'];
+    window[p + 'Tab'] = function (t) { o(t); $(p + 'LookupPanel').classList.remove('active'); $(p + 'LookupTab').classList.remove('active'); };
+  });
+  window.lookupTab = function (p) {
+    $('view-' + p).querySelectorAll('.sub-tab').forEach(x => x.classList.remove('active'));
+    $('view-' + p).querySelectorAll('.att-panel').forEach(x => x.classList.remove('active'));
+    $(p + 'LookupTab').classList.add('active'); $(p + 'LookupPanel').classList.add('active'); ic();
+  };
+  window.openLookup = function (p, usn) { lookupTab(p); $(p + 'LookupInput').value = usn; lookupUsn(p); };
+  window.lookupUsn = async function (p) {
+    const out = $(p + 'LookupOut'), usn = val(p + 'LookupInput').trim().toUpperCase();
+    if (!usn) return;
+    out.innerHTML = '<div class="empty-note">Searching…</div>';
+    try {
+      const D = await loadAll();
+      let s = D.students.find(x => (x.usn || '').toUpperCase() === usn);
+      if (!s) { const r = D.vtu.find(x => (x.usn || '').toUpperCase() === usn); if (r) s = D.students.find(x => x.uid === r.studentUid); }
+      if (!s) { out.innerHTML = `<div class="empty-note">No student found with USN ${esc(usn)}${role() === 'hod' ? ' in your department' : ''}.</div>`; return; }
+      const A = att(s.uid, D.subs, D.sessions);
+      const R = D.vtu.filter(r => r.studentUid === s.uid).sort((a, b) => a.semester - b.semester);
+      const low = A.per.filter(x => x.total && x.pct < 75).length, last = R[R.length - 1];
+      out.innerHTML = `<div class="card-like" style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin-bottom:14px"><h3 style="font-size:1.1rem">${esc(s.name)}</h3><div style="font-size:.82rem;color:var(--muted);margin-top:4px;font-family:'DM Mono',monospace">USN: <b style="color:var(--ink)">${esc(s.usn || usn)}</b> | ${esc(s.course || '-')} | Sem ${esc(s.semester || '-')} | ${esc(s.email)}${s.phone ? ' | ' + esc(s.phone) : ''}</div></div>
+      <div class="hod-stats-row">${tile(A.total ? A.pct + '%' : '--', 'Overall attendance', A.total ? barCol(A.pct) : '')}${tile(cgpa(R), 'CGPA')}${tile(low, 'Subjects below 75%', low ? '#ef4444' : '')}${tile(R.length, 'Semesters recorded')}</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-bottom:16px">
+        <div class="chart-container-card" style="margin:0"><div class="chart-header"><h4>Attendance % by subject</h4></div><div style="height:220px;position:relative"><canvas id="${p}LkAtt"></canvas></div></div>
+        <div class="chart-container-card" style="margin:0"><div class="chart-header"><h4>SGPA trend</h4></div><div style="height:220px;position:relative"><canvas id="${p}LkSgpa"></canvas></div></div>
+        <div class="chart-container-card" style="margin:0"><div class="chart-header"><h4>Marks by subject${last ? ' (Sem ' + last.semester + ')' : ''}</h4></div><div style="height:220px;position:relative"><canvas id="${p}LkMarks"></canvas></div></div></div>
+      <div class="section-head"><h3>Attendance by subject</h3></div><div class="table-wrap" style="margin-bottom:16px"><table><thead><tr><th>Subject</th><th>Held</th><th>Present</th><th>Percentage</th></tr></thead><tbody>${A.per.map(x => `<tr><td class="title-cell">${esc(x.sub.name)} <span style="color:var(--muted)">(${esc(x.sub.code)})</span></td><td>${x.total}</td><td>${x.present}</td><td>${x.total ? pctBadge(x.pct) : '-'}</td></tr>`).join('') || '<tr><td colspan="4" style="padding:16px;text-align:center;color:var(--muted)">No subjects</td></tr>'}</tbody></table></div>
+      <div class="section-head"><h3>VTU results</h3></div>${R.length ? R.map(r => renderSemesterResultCard(r, false)).join('') : '<div class="empty-note">No VTU results recorded yet.</div>'}`;
+      const sub = A.per.filter(x => x.total);
+      chartOn(p + 'LkAtt', { type: 'bar', data: { labels: sub.map(x => x.sub.code), datasets: [{ data: sub.map(x => x.pct), backgroundColor: sub.map(x => barCol(x.pct)), borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } }, plugins: { legend: { display: false } } } });
+      sgpaChart(p + 'LkSgpa', R);
+      const ms = last ? last.subjects || [] : [];
+      chartOn(p + 'LkMarks', { type: 'bar', data: { labels: ms.map(x => x.code), datasets: [{ data: ms.map(x => x.total), backgroundColor: ms.map(x => barCol(x.total)), borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } }, plugins: { legend: { display: false } } } });
+      ic();
+    } catch (e) { out.innerHTML = `<div class="empty-note" style="color:var(--red)">Error: ${esc(e.message)}</div>`; }
+  };
+
+  /* ---------- 7. HOD + Principal dashboards (real numbers, working filters) ---------- */
+  window.loadHodDashboard = async function () {
+    const fb = fbx();
+    try {
+      const D = await loadAll();
+      const tc = await fb.getDocs(fb.query(fb.collection(fb.db, 'users'), fb.where('role', '==', 'teacher')));
+      $('hodStatStudents').textContent = D.students.length; $('hodStatTeachers').textContent = tc.size; $('hodStatSubjects').textContent = D.subs.length;
+      const rows = D.students.map(s => ({ s, a: att(s.uid, D.subs, D.sessions) })).filter(r => r.a.total);
+      $('hodStatAttendance').textContent = rows.length ? Math.round(rows.reduce((x, r) => x + r.a.pct, 0) / rows.length) + '%' : '--';
+      const low = rows.filter(r => r.a.pct < 75).sort((a, b) => a.a.pct - b.a.pct);
+      $('hodLowAttendanceList').innerHTML = low.length ? low.slice(0, 25).map(r => `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="openLookup('hod','${esc(r.s.usn || '')}')"><div><div style="font-weight:600;font-size:.85rem">${esc(r.s.name)}</div><div style="font-size:.75rem;color:var(--muted)">${esc(r.s.usn || r.s.email)}</div></div>${pctBadge(r.a.pct)}</div>`).join('') : '<div class="empty-note">No student is below 75%.</div>';
+      const top = D.students.map(s => ({ s, c: cgpa(D.vtu.filter(r => r.studentUid === s.uid)) })).filter(x => x.c !== 'N/A').sort((a, b) => b.c - a.c).slice(0, 5);
+      $('hodTopPerformersList').innerHTML = top.length ? top.map(x => `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)"><div><div style="font-weight:600;font-size:.85rem">${esc(x.s.name)}</div><div style="font-size:.75rem;color:var(--muted)">USN: ${esc(x.s.usn || 'N/A')}</div></div><span class="sgpa-badge sgpa-good">CGPA: ${x.c}</span></div>`).join('') : '<div class="empty-note">No VTU results uploaded yet.</div>';
+      ic();
+    } catch (e) { console.error(e); }
+  };
+  function studentRows(D, list, pfx) {
+    return list.map(s => {
+      const a = att(s.uid, D.subs, D.sessions), c = cgpa(D.vtu.filter(r => r.studentUid === s.uid));
+      return { s, a, c };
+    });
+  }
+  window.renderHodStudentsTable = async function () {
+    const tb = $('hodStudentsTableBody'); tb.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--muted)">Loading…</td></tr>';
+    try {
+      const D = await loadAll(), q = val('hodStudentSearch').toLowerCase(), br = val('hodBranchFilter'), yr = val('hodYearFilter');
+      const l = D.students.filter(s => (!q || [s.name, s.email, s.usn].some(x => (x || '').toLowerCase().includes(q))) && (!br || s.course === br) && (!yr || Math.ceil(Number(s.semester) / 2) == yr));
+      tb.innerHTML = l.length ? studentRows(D, l).map(({ s, a, c }) => `<tr><td class="title-cell">${esc(s.name)}<br><span style="font-size:.75rem;font-family:'DM Mono',monospace;font-weight:600">${esc(s.usn || '-')}</span> <span class="scheme-badge" style="font-size:.7rem;padding:2px 6px">${esc(s.course || '')}</span></td><td class="author-cell">${esc(s.email)}</td><td>${a.total ? pctBadge(a.pct) : '-'}</td><td><span class="sgpa-badge ${c !== 'N/A' && c >= 7.5 ? 'sgpa-good' : 'sgpa-mid'}">${c}</span></td><td>${a.total ? (a.pct < 75 ? '<span class="pct-badge pct-low">Shortage</span>' : '<span class="pct-badge pct-good">Good</span>') : '-'}</td><td><button class="btn btn-sm btn-ghost" onclick="openLookup('hod','${esc(s.usn || '')}')">View</button> <button class="btn btn-sm btn-ghost" onclick="openVtuModal()">Add Result</button></td></tr>`).join('') : '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--muted)">No students found.</td></tr>';
+    } catch (e) { tb.innerHTML = `<tr><td colspan="6" style="color:var(--red);padding:20px">${esc(e.message)}</td></tr>`; }
+  };
+  window.renderPrincipalStudentInspector = async function () {
+    const c = $('principalStudentList'); c.innerHTML = '<div class="empty-note">Loading…</div>';
+    try {
+      const D = await loadAll(), q = val('principalStudentSearch').toLowerCase(), br = val('principalBranchFilter'), yr = val('principalYearFilter'), sc = val('principalSchemeFilter');
+      const l = D.students.filter(s => (!q || [s.name, s.email, s.usn, s.course].some(x => (x || '').toLowerCase().includes(q))) && (!br || s.course === br) && (!yr || Math.ceil(Number(s.semester) / 2) == yr) && (!sc || (s.usn || '').substr(3, 2) === sc.slice(2)));
+      c.innerHTML = l.length ? studentRows(D, l.slice(0, 100)).map(({ s, a, c: g }) => `<div style="padding:14px;border:1px solid var(--border);border-radius:8px;margin-bottom:10px;background:#fff;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><div><b>${esc(s.name)}</b> <span class="scheme-badge">${esc(s.course || '')}</span> <span class="scheme-badge" style="background:var(--accent2);color:#fff">Sem ${esc(s.semester || '-')}</span><div style="font-size:.8rem;color:var(--muted);font-family:'DM Mono',monospace;margin-top:4px">USN: ${esc(s.usn || '-')} | ${esc(s.email)}</div></div><div style="display:flex;gap:8px;align-items:center">${a.total ? pctBadge(a.pct) : ''}<span class="sgpa-badge ${g !== 'N/A' && g >= 7.5 ? 'sgpa-good' : 'sgpa-mid'}">CGPA: ${g}</span><button class="btn btn-sm btn-ghost" onclick="openLookup('principal','${esc(s.usn || '')}')">View</button></div></div>`).join('') : '<div class="empty-note">No students found.</div>';
+    } catch (e) { c.innerHTML = `<div class="empty-note" style="color:var(--red)">${esc(e.message)}</div>`; }
+  };
+  window.renderPrincipalAnalyticsChart = async function () {
+    try {
+      const D = await loadAll(), sc = val('principalAnalyticsSchemeFilter'), n = D.students.length;
+      const pts = D.subs.filter(s => !sc || (s.scheme || '2022') === sc).map(s => { const ss = D.sessions.filter(x => x.subjectId === s.id), pr = ss.reduce((a, x) => a + (x.presentUids || []).length, 0); return { c: s.code, p: ss.length && n ? Math.round(pr / (ss.length * n) * 100) : null }; }).filter(x => x.p !== null);
+      chartOn('principalAnalyticsChart', { type: 'bar', data: { labels: pts.map(x => x.c), datasets: [{ data: pts.map(x => x.p), backgroundColor: pts.map(x => barCol(x.p)), borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } }, plugins: { legend: { display: false } } } });
+    } catch (e) { console.error(e); }
+  };
+
+  /* ---------- 8. Student: overview, SGPA graph ---------- */
+  async function renderStudentOverview() {
+    const p = $('stPanelBrowse'); if (!p || !window.currentUser) return;
+    try {
+      const fb = fbx();
+      const [ss, subs, vtu] = await Promise.all([fb.getDocs(fb.collection(fb.db, 'attendanceSessions')), fetchAllSubjects(), fetchAllVtuResults()]);
+      const A = att(window.currentUser.uid, subs, ss.docs.map(d => d.data())), low = A.per.filter(x => x.total && x.pct < 75);
+      p.innerHTML = `<div class="hod-stats-row">${tile(A.total ? A.pct + '%' : '--', 'Overall attendance', A.total ? barCol(A.pct) : '')}${tile(cgpa(vtu), 'CGPA')}${tile(low.length, 'Subjects below 75%', low.length ? '#ef4444' : '')}${tile(vtu.length, 'Semesters recorded')}</div>${low.length ? `<div class="librarian-note"><i data-lucide="alert-triangle" class="icon-sm"></i> Low attendance: ${low.map(x => esc(x.sub.name) + ' (' + x.pct + '%)').join(', ')}</div>` : ''}`;
+      ic();
+    } catch (e) { p.innerHTML = '<div class="empty-note">Could not load overview.</div>'; }
+  }
+  const lv = $('studentVtuResultsList');
+  if (lv) { const c = document.createElement('div'); c.className = 'chart-container-card'; c.innerHTML = '<div class="chart-header"><h4>SGPA Trend</h4></div><div style="height:220px;position:relative"><canvas id="studentSgpaChart"></canvas></div>'; lv.parentNode.insertBefore(c, lv.previousElementSibling); }
+  const _lm = window.loadMyVtuResults;
+  window.loadMyVtuResults = async function () {
+    await _lm();
+    const r = (await fetchAllVtuResults()).sort((a, b) => a.semester - b.semester); sgpaChart('studentSgpaChart', r);
+  };
+  const _sv = window.switchView;
+  window.switchView = function (v) { _sv(v); if (v === 'student') renderStudentOverview(); };
+
+  /* ---------- 9. Profile modal + ID card (were missing) ---------- */
+  let photo = null;
+  function setPreview(src, name) {
+    const im = $('profileModalPicPreview'), fb = $('profileModalPicFallback');
+    if (src) { im.src = src; im.style.display = 'block'; fb.style.display = 'none'; } else { im.style.display = 'none'; fb.style.display = 'flex'; fb.textContent = (name || 'U')[0].toUpperCase(); }
+  }
+  window.openProfileModal = async function () {
+    closeUserDropdown(); photo = null; const fb = fbx(), u = window.currentUser;
+    try { const s = await fb.getDoc(fb.doc(fb.db, 'users', u.uid)); window.currentUserDoc = s.exists() ? s.data() : {}; } catch (e) { }
+    const d = window.currentUserDoc || {}, st = role() === 'student';
+    $('profName').value = d.name || u.displayName || ''; $('profPhone').value = d.phone || ''; $('profBloodGroup').value = d.bloodGroup || 'O +ve'; $('profBio').value = d.bio || '';
+    $('profStudentUsnField').style.display = $('profStudentSemField').style.display = st ? '' : 'none';
+    $('profStudentCourseField').style.display = (st || role() === 'hod') ? '' : 'none';
+    if (st || role() === 'hod') $('profCourse').value = d.course || 'CSE';
+    if (st) { $('profUsn').value = d.usn || ''; $('profSemester').value = d.semester || '1'; }
+    setPreview(d.photoData, d.name || u.displayName);
+    $('profileModalBg').classList.add('open'); ic();
+  };
+  window.closeProfileModal = () => $('profileModalBg').classList.remove('open');
+  window.previewProfilePic = function (e) {
+    const f = e.target.files[0]; if (!f) return;
+    if (f.size > 2 * 1024 * 1024) return toast('Photo must be under 2MB.', 'alert-circle');
+    const img = new Image(); img.onload = () => {
+      const c = document.createElement('canvas'); c.width = c.height = 256; const m = Math.min(img.width, img.height);
+      c.getContext('2d').drawImage(img, (img.width - m) / 2, (img.height - m) / 2, m, m, 0, 0, 256, 256);
+      photo = c.toDataURL('image/jpeg', .8); setPreview(photo);
+    }; img.src = URL.createObjectURL(f);
+  };
+  window.saveProfile = async function () {
+    const fb = fbx(), u = window.currentUser, old = window.currentUserDoc || {}, name = val('profName').trim();
+    if (!name) return toast('Name is required.', 'alert-circle');
+    const data = { name, phone: val('profPhone').trim(), bloodGroup: val('profBloodGroup'), bio: val('profBio').trim() };
+    if (photo) data.photoData = photo;
+    const btn = $('profSaveBtn'); btn.disabled = true;
+    try {
+      if (role() === 'hod') data.course = val('profCourse');
+      if (role() === 'student') {
+        const usn = val('profUsn').trim().toUpperCase();
+        if (!USN_RE.test(usn)) { toast('USN format looks wrong. Example: 4KT22CS001', 'alert-circle'); return; }
+        if (usn !== (old.usn || '')) {
+          const ex = await fb.getDoc(fb.doc(fb.db, 'usnIndex', usn));
+          if (ex.exists() && ex.data().uid !== u.uid) { toast('This USN belongs to another student.', 'alert-circle'); return; }
+          await fb.setDoc(fb.doc(fb.db, 'usnIndex', usn), { email: u.email, uid: u.uid });
+          if (old.usn) { try { await fb.deleteDoc(fb.doc(fb.db, 'usnIndex', old.usn)); } catch (e) { } }
+        }
+        Object.assign(data, { usn, course: val('profCourse'), semester: val('profSemester') });
+      }
+      await fb.setDoc(fb.doc(fb.db, 'users', u.uid), data, { merge: true });
+      await fb.updateProfile(u, { displayName: name });
+      window.currentUserDoc = { ...old, ...data }; updateHeaderUser(u); paintAvatar(); closeProfileModal(); toast('Profile saved', 'check-circle');
+      if (role() === 'student') { renderIdCard(); loadStudentProfileBadges(); }
+    } catch (e) { toast('Error: ' + e.message, 'alert-circle'); }
+    finally { btn.disabled = false; }
+  };
+  function renderIdCard() {
+    const d = window.currentUserDoc || {}, u = window.currentUser, n = d.name || u.displayName || 'Student';
+    $('idCardName').textContent = n; $('idCardUsn').textContent = d.usn || 'USN not set'; $('idCardCourse').textContent = d.course || '-';
+    const s = Number(d.semester); $('idCardSemester').textContent = s ? s + (s == 1 ? 'st' : s == 2 ? 'nd' : s == 3 ? 'rd' : 'th') + ' Semester' : '-';
+    const t = new Date(), a = t.getMonth() >= 5 ? t.getFullYear() : t.getFullYear() - 1; $('idCardAcademicYear').textContent = a + ' - ' + (a + 1);
+    $('idCardBloodGroup').textContent = d.bloodGroup || '-';
+    const im = $('idCardPhoto'), fb = $('idCardPhotoFallback');
+    if (d.photoData) { im.src = d.photoData; im.style.display = 'block'; fb.style.display = 'none'; } else { im.style.display = 'none'; fb.style.display = 'flex'; fb.textContent = n[0].toUpperCase(); }
+    const q = $('idCardQrBox'); q.innerHTML = ''; if (window.QRCode) new QRCode(q, { text: u.uid, width: 60, height: 60 });
+  }
+  window.printStudentIdCard = () => window.print();
+  const _st = window.studentTab;
+  window.studentTab = function (t) {
+    _st(t); const on = t === 'idcard';
+    $('stTabIdCard').classList.toggle('active', on); $('stPanelIdCard').classList.toggle('active', on);
+    if (on) renderIdCard(); if (t === 'browse') renderStudentOverview();
+  };
+  /* ---------- 10. Route gate: stops the original auth listener racing the patched sign-in ---------- */
+  const _sv2 = window.switchView;
+  window.switchView = function (v) {
+    if (window._suppressAuthRoute) return;                                   // patched sign-in/sign-up routes itself
+    if (window.currentUser && !window.currentUserDoc) { kitRoute(window.currentUser); return; } // page reload with active session
+    _sv2(v);
+  };
+  ic();
+})();
+  </script>    
 </body>
 
 </html>
